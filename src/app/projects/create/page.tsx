@@ -21,7 +21,7 @@ export default async  function CreateProject() {
               <p
               className={`text-center text-md text-base-content/80 mb-8`}
               >
-                  We're excited to see what you've been working on! Please fill out the form below to submit your project.
+                  {"We're excited to see what you've been working on! Please fill out the form below to submit your project."}
               </p>
               <CreateProjectForm />
           </div>

@@ -1,6 +1,5 @@
 import {getServerAuthSession} from "@/server/auth";
 import Link from "next/link";
-import SignoutButton from "@/components/signout-button";
 
 export default async function Navbar() {
 

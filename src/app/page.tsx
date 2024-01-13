@@ -1,18 +1,17 @@
 import { getServerAuthSession } from "@/server/auth";
-import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Link from "next/link";
 import Image from "next/image";
 import BackgroundCellCore from "@/components/background-cells";
+import { IoCloudUploadOutline } from "react-icons/io5";
 
 export default async function Home() {
   const session = await getServerAuthSession();
 
   return (
     <>
-      <Navbar />
       <main
-        className={`flex min-h-[100dvh] items-center justify-center bg-base-200 pt-24`}
+        className={`flex min-h-[100dvh] pb-16 items-center justify-center bg-base-200 pt-24`}
       >
           <BackgroundCellCore />
         <div
@@ -23,24 +22,29 @@ export default async function Home() {
               Tech Project Discovery for
               <span className={`ml-2 text-accent`}>Passionate Innovators</span>.
             </h1>
-            {session ? (
-              <p className="pt-6 text-center">
-                Welcome Back{" "}
-                <span className={`font-bold`}>{session.user.name}</span>! <br />
-                Start browsing projects below.
-              </p>
-            ) : (
               <p className="py-6">
                 Unlock Your Coding Potential: Explore, Connect, and Contribute
                 with Project Finder – Where Tech Dreams Find Their Code.
               </p>
-            )}
+            <div
+            className={`flex space-x-4`}
+            >
+              {
+                session ? <Link
+                    href={`/projects/create`}
+                    className="btn btn-outline btn-primary  pointer-events-auto mt-6"
+                >
+                  Upload Project
+                  <IoCloudUploadOutline className={`ml-1 text-xl`} />
+                </Link> : <></>
+              }
             <Link
-              href={`/api/auth/signin`}
+              href={session ? `/projects` : `/api/auth/signin`}
               className="btn btn-outline btn-neutral btn-wide pointer-events-auto mt-6"
             >
               {session ? "Browse Projects" : "Get Started"}
             </Link>
+            </div>
           </div>
           <div className={`w-full px-8`}>
             <div className={`relative h-[40dvh] w-full`}>

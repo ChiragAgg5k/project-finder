@@ -4,6 +4,8 @@ import { Ubuntu} from "next/font/google";
 import { cookies } from "next/headers";
 
 import { TRPCReactProvider } from "@/trpc/react";
+import Navbar from "@/components/navbar";
+import React from "react";
 
 const ubuntu = Ubuntu({
   subsets: ["latin"],
@@ -26,6 +28,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${ubuntu.variable}`}>
         <TRPCReactProvider cookies={cookies().toString()}>
+          <Navbar />
           {children}
         </TRPCReactProvider>
       </body>

@@ -27,6 +27,8 @@
     "next-auth": "^4.24.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-drag-drop-files": "^2.3.10",
+    "react-icons": "^5.0.1",
     "server-only": "^0.0.1",
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.2.0",

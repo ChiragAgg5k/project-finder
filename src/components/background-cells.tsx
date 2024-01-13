@@ -1,17 +1,24 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { motion, useAnimation } from "framer-motion";
 import { cn } from "@/utils/cn";
+
+type Cell = [number, number];
 
 export default function BackgroundCellCore() {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-    const ref = useRef<any>(null);
+    const ref = useRef<HTMLDivElement>(null);
 
     const handleMouseMove = (event: React.MouseEvent) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
         const rect = ref.current?.getBoundingClientRect();
+
+        if(!rect) {
+            return;
+        }
+
         setMousePosition({
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             x: event.clientX - rect.left,
@@ -69,7 +76,7 @@ const Pattern = ({
     const y = new Array(30).fill(0);
     const matrix = x.map((_, i) => y.map((_, j) => [i, j]));
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const [clickedCell, setClickedCell] = useState<any>(null);
+    const [clickedCell, setClickedCell] = useState<Cell | null>(null);
 
     return (
         <div className={cn("relative z-30  flex flex-row", className)}>

@@ -56,8 +56,8 @@ export default async function Projects() {
                 id={project.id}
               key={index}
               title={project.name}
-              description={project.description || ""}
-              image={project.image || ""}
+              description={project.description ?? ""}
+              image={project.image ?? ""}
               tags={[]}
             />
           ))}

@@ -20,7 +20,7 @@ export default function ProjectTile({
         className={`flex h-full flex-col rounded-xl border border-base-content/10 px-5 pt-5 hover:border-base-content/20`}
       >
           <Image
-            src={`/people.jpg`}
+            src={image}
             alt={``}
             width={1024}
             height={1024}

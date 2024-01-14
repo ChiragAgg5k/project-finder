@@ -26,9 +26,9 @@ export default function Projects() {
     ]
 
   return (
-    <div className={`relative mt-20 flex min-h-[91dvh] bg-base-200 p-8 pb-32`}>
+    <div className={`relative mt-20 flex flex-col sm:flex-row min-h-[91dvh] bg-base-200 p-8 pb-32`}>
       <div
-        className={`sticky top-8 mr-8 h-fit rounded-xl border border-base-content/10 px-4 py-8`}
+        className={`sm:sticky mb-8 w-full sm:w-fit top-8 mr-8 h-fit rounded-xl border border-base-content/10 px-4 py-8`}
       >
         <h3 className={`mb-6 text-center text-xl font-bold`}>
           <FaFilter

@@ -34,7 +34,7 @@ export default function BackgroundCellCore() {
             onMouseMove={handleMouseMove}
             className="absolute inset-0 h-full"
         >
-            <div className="absolute inset-y-0 h-[40rem]  overflow-hidden">
+            <div className="absolute inset-y-0 h-[20rem] w-screen overflow-hidden">
                 <div className="pointer-events-none absolute -bottom-2 z-40 h-full w-full bg-base-200 [mask-image:linear-gradient(to_bottom,transparent,black)]"></div>
                 <div
                     className="absolute inset-0 z-20 bg-transparent"
@@ -79,7 +79,7 @@ const Pattern = ({
     const [clickedCell, setClickedCell] = useState<Cell | null>(null);
 
     return (
-        <div className={cn("relative z-30  flex flex-row", className)}>
+        <div className={cn("relative z-30 flex flex-row", className)}>
             {matrix.map((row, rowIdx) => (
                 <div
                     key={`matrix-row-${rowIdx}`}

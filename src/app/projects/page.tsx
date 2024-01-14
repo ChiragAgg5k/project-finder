@@ -1,10 +1,14 @@
+"use client";
+
 import ProjectTile from "@/components/project-tile";
 import { CiSearch } from "react-icons/ci";
 import { FaFilter } from "react-icons/fa";
-import { api } from "@/trpc/server";
+import { api } from "@/trpc/react";
+import {useState} from "react";
 
-export default async function Projects() {
-  const projects = await api.project.fetchAll.query();
+export default function Projects() {
+  const projects = api.project.fetchAll.useQuery();
+  const [search, setSearch] = useState("");
 
   return (
     <div
@@ -44,6 +48,8 @@ export default async function Projects() {
           <input
             className={`input input-bordered mb-8 w-full`}
             placeholder={`Search Projects`}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
           <button className={`btn btn-square btn-ghost absolute right-8`}>
             <CiSearch className={`text-xl`} />
@@ -52,23 +58,35 @@ export default async function Projects() {
         <div
           className={`grid grid-cols-1 gap-8 md:grid-cols-2  lg:grid-cols-3`}
         >
-          {projects.map((project, index) => (
-            <ProjectTile
-              id={project.id}
-              key={index}
-              title={project.name}
-              description={project.description ?? ""}
-              image={project.image ?? ""}
-              tags={[]}
-            />
-          ))}
-          {projects.length === 0 ? (
-            <p className={`col-span-3 mt-24 text-center text-base-content/50`}>
-              No projects found
-            </p>
-          ) : (
-            <></>
-          )}
+          {
+            projects.fetchStatus === "fetching" ? (
+                <p className={`col-span-3 mt-36 text-center text-base-content/70`}>
+                    Loading...
+                </p>
+                ) : (
+                <>
+                  {projects.data?.map((project, index) => (
+                      (project.name.toLowerCase().includes(search.toLowerCase()) || project.description?.toLowerCase().includes(search.toLowerCase())) &&
+                      <ProjectTile
+                          id={project.id}
+                          searchedQuery={search}
+                          key={index}
+                          title={project.name}
+                          description={project.description ?? ""}
+                          image={project.image ?? ""}
+                          tags={project.tags?.split(",") ?? []}
+                      />
+                  ))}
+                  {projects.data?.length === 0 ? (
+                      <p className={`col-span-3 mt-24 text-center text-base-content/50`}>
+                        No projects found
+                      </p>
+                  ) : (
+                      <></>
+                  )}
+                </>
+                )
+          }
         </div>
       </div>
       <div

@@ -29,7 +29,7 @@ export default async function ProfilePage({
 
   return (
     <div
-      className={`mt-20 flex min-h-[90dvh] flex-col items-center justify-center bg-base-200 p-8`}
+      className={`mt-20 flex min-h-[91dvh] flex-col items-center justify-center bg-base-200 p-8`}
     >
       <h1 className={`mb-2 text-3xl font-bold`}>{user.name}</h1>
       <p className={`mb-4 text-base-content/70`}>{user.email}</p>

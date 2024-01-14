@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Highlighter from "react-highlight-words";
 
 export default function ProjectTile({
   id,
@@ -7,12 +8,14 @@ export default function ProjectTile({
   description,
   image,
   tags,
+    searchedQuery
 }: {
   id: string;
   title: string;
   description: string;
   image: string;
   tags: string[];
+    searchedQuery: string;
 }) {
   return (
     <Link
@@ -27,17 +30,27 @@ export default function ProjectTile({
         className={`rounded-lg object-cover`}
       />
       <div className={`py-4`}>
-        <h3 className={`mb-2 text-xl font-bold`}>{title}</h3>
+        <h3 className={`mb-2 text-xl font-bold`}>
+          <Highlighter
+              searchWords={[searchedQuery]}
+              autoEscape={true}
+              textToHighlight={title}
+          />
+        </h3>
         <p className={`line-clamp-2 text-sm text-base-content/50`}>
-          {description}
+          <Highlighter
+            searchWords={[searchedQuery]}
+            autoEscape={true}
+            textToHighlight={description}
+            />
         </p>
-        <ul className={`mt-4 flex items-center justify-end space-x-4`}>
+        {tags.length > 0 && <ul className={`mt-4 flex-wrap flex items-center justify-end space-x-4`}>
           {tags.map((tag, index) => (
-            <li key={index}>
-              <span className="badge">{tag}</span>
+              tag != "" &&<li key={index}>
+              <span className="badge text-nowrap">{tag}</span>
             </li>
           ))}
-        </ul>
+        </ul> }
       </div>
     </Link>
   );

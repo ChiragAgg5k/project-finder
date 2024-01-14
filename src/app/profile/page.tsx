@@ -5,14 +5,14 @@ export default async function ProfilePage() {
   const session = await getServerAuthSession();
 
   if (!session) {
-    redirect("/");
+    return redirect("/");
   }
 
   redirect(`/profile/${session.user.id}`);
 
   return (
     <div
-      className={`mt-20 flex min-h-[90dvh] flex-col items-center justify-center bg-base-200 p-8`}
+      className={`mt-20 flex min-h-[91dvh] flex-col items-center justify-center bg-base-200 p-8`}
     >
       <h1 className={`text-3xl font-bold`}>Loading...</h1>
     </div>

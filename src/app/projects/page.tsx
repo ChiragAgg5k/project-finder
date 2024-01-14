@@ -1,29 +1,11 @@
 import ProjectTile from "@/components/project-tile";
 import { CiSearch } from "react-icons/ci";
 import { FaFilter } from "react-icons/fa";
+import {api} from "@/trpc/server";
 
-export default function Projects() {
+export default async function Projects() {
 
-    const exampleProjects = [
-        {
-            title: "Bloom",
-            description: "A social media platform for developers",
-            image: "/people.jpg",
-            tags: ["React", "Next.js", "TypeScript"],
-        },
-        {
-            title: "Covid Tracker",
-            description: "A Covid-19 tracker built with React",
-            image: "/people.jpg",
-            tags: ["Svelte", "TypeScript"],
-        },
-        {
-            title: "Quiz App",
-            description: "A quiz app built with Firebase",
-            image: "/people.jpg",
-            tags: ["Angular", "Firebase"],
-        }
-    ]
+    const projects = await api.project.fetchAll.query();
 
   return (
     <div className={`relative mt-20 flex flex-col sm:flex-row min-h-[91dvh] bg-base-200 p-8 pb-32`}>
@@ -69,16 +51,17 @@ export default function Projects() {
         <div
           className={`grid grid-cols-1 gap-8 md:grid-cols-2  lg:grid-cols-3`}
         >
-          {exampleProjects.map((project, index) => (
+          {projects.map((project, index) => (
             <ProjectTile
+                id={project.id}
               key={index}
-              title={project.title}
-              description={project.description}
-              image={project.image}
-              tags={project.tags}
+              title={project.name}
+              description={project.description || ""}
+              image={project.image || ""}
+              tags={[]}
             />
           ))}
-          {exampleProjects.length === 0 ? (
+          {projects.length === 0 ? (
             <p className={`col-span-3 mt-24 text-center text-base-content/50`}>
               No projects found
             </p>
@@ -88,7 +71,7 @@ export default function Projects() {
         </div>
       </div>
       <div
-        className={`absolute bottom-4 flex w-full items-center justify-center`}
+        className={`absolute bottom-4 w-[90vw] flex items-center justify-center`}
       >
         <div className="join border border-base-content/10">
           <button className="btn join-item btn-active">1</button>

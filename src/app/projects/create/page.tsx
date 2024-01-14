@@ -23,7 +23,7 @@ export default async  function CreateProject() {
               >
                   {"We're excited to see what you've been working on! Please fill out the form below to submit your project."}
               </p>
-              <CreateProjectForm />
+              <CreateProjectForm userId={session.user.id} />
           </div>
       </div>
   );

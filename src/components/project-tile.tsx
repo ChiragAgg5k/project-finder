@@ -1,28 +1,31 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ProjectTile({
+    id,
     title,
     description,
     image,
     tags,
                                     }:{
+    id: string,
     title: string,
     description: string,
     image: string,
     tags: string[],
 }) {
     return (
-      <div
-        className={`flex h-full flex-col rounded-xl border border-base-content/10 px-6 pt-6 hover:border-base-content/20`}
+      <Link
+        href={`/projects/${id}`}
+        className={`flex h-full flex-col rounded-xl border border-base-content/10 px-5 pt-5 hover:border-base-content/20`}
       >
-        <div className={`relative h-48 `}>
           <Image
-            src={`/people.jpg`}
+            src={image}
             alt={``}
-            fill
+            width={1024}
+            height={1024}
             className={`rounded-lg object-cover`}
           />
-        </div>
         <div className={`py-4`}>
           <h3 className={`mb-2 text-xl font-bold`}>{title}</h3>
           <p className={`line-clamp-2 text-sm text-base-content/50`}>
@@ -38,6 +41,6 @@ export default function ProjectTile({
                 ))}
           </ul>
         </div>
-      </div>
+      </Link>
     );
 }

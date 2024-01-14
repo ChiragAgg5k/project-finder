@@ -27,12 +27,12 @@ export default async function Home() {
                 with Project Finder – Where Tech Dreams Find Their Code.
               </p>
             <div
-            className={`flex space-x-4`}
+            className={`flex flex-col sm:flex-row`}
             >
               {
                 session ? <Link
                     href={`/projects/create`}
-                    className="btn btn-outline btn-primary  pointer-events-auto mt-6"
+                    className="btn btn-outline btn-primary  pointer-events-auto mt-6 mr-0 sm:mr-4"
                 >
                   Upload Project
                   <IoCloudUploadOutline className={`ml-1 text-xl`} />

@@ -1,16 +1,47 @@
 "use client";
 
-import { useState } from "react";
-import { FileUploader } from "react-drag-drop-files";
+import React, { useEffect, useState } from "react";
 import { FaGithub } from "react-icons/fa";
+import { UploadDropzone } from "@/utils/uploadthing";
+import { api } from "@/trpc/react";
+import { useRouter } from "next/navigation";
+import { ImSpinner9 } from "react-icons/im";
 
-const fileTypes = ["JPG", "PNG"];
-
-export default function CreateProjectForm() {
+export default function CreateProjectForm({ userId }: { userId: string }) {
   const githubConnected = false;
-  const [image, setImage] = useState<File | null>(null);
-  const handleChange = (file: File) => {
-    setImage(file);
+  const router = useRouter();
+  const [imageName, setImageName] = useState("");
+
+  const [uploading, setUploading] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [projectName, setProjectName] = useState("");
+  const [projectDescription, setProjectDescription] = useState("");
+  const [projectURL, setProjectURL] = useState("");
+  const [imageURL, setImageURL] = useState("");
+
+  const createProject = api.project.create.useMutation();
+
+  useEffect(() => {
+    if (createProject.isSuccess) {
+      const projectId = createProject.data;
+      router.push(`/projects/${projectId}`);
+    }
+  }, [createProject.isSuccess]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!projectName || !projectDescription || !projectURL || !imageURL) return;
+
+    setLoading(true);
+
+    createProject.mutate({
+      name: projectName,
+      description: projectDescription,
+      projectUrl: projectURL,
+      image: imageURL,
+      ownerId: userId,
+    });
   };
 
   return (
@@ -37,34 +68,69 @@ export default function CreateProjectForm() {
         </div>
       )}
       <hr className={`border-accent py-4`} />
-      <form className={`space-y-6`}>
+      <form className={`space-y-6`} onSubmit={handleSubmit}>
         <input
           className={`input input-bordered w-full`}
           placeholder={`Project Name`}
+          value={projectName}
+          onChange={(e) => setProjectName(e.target.value)}
+          required
+          type={`text`}
         />
         <textarea
           className={`textarea textarea-bordered w-full`}
           placeholder={`Project Description`}
+          value={projectDescription}
+          onChange={(e) => setProjectDescription(e.target.value)}
           rows={5}
         />
         <input
           className={`input input-bordered w-full`}
           placeholder={`Project URL`}
+          value={projectURL}
+          type={`url`}
+          onChange={(e) => setProjectURL(e.target.value)}
         />
-        <div className={`flex items-center justify-around`}>
-          <p className={`text-base text-base-content/70`}>
-            Project Image <span className={`underline`}>(Optional)</span>
-          </p>
-          <FileUploader
-            handleChange={handleChange}
-            name="file"
-            types={fileTypes}
-            label="Drag & Drop Project Image Here"
+        <div className={`flex flex-col items-center justify-around`}>
+          <UploadDropzone
+            className="ut-button:btn ut-button:btn-neutral ut-button:btn-sm ut-uploading:border-base-content/50 ut-readying:bg-base-100 ut-label:text-md ut-label:text-base-content ut-allowed-content:ut-uploading:text-error w-full rounded-xl bg-base-300"
+            endpoint="imageUploader"
+            onUploadBegin={() => {
+              setUploading(true);
+            }}
+            onClientUploadComplete={(res) => {
+              setUploading(false);
+              const imageFile = res[0];
+              if (!imageFile) return;
+
+              setImageName(imageFile.name);
+              setImageURL(imageFile.url);
+            }}
+            onUploadError={(error: Error) => {
+              alert(`ERROR! ${error.message}`);
+            }}
           />
+          {imageName !== "" ? (
+            <div className={`mt-4`}>
+              <p className={`text-sm text-base-content/70`}>
+                Project Image{" "}
+                <span className={`text-primary`}>{imageName}</span> uploaded
+                successfully!{" "}
+              </p>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
 
         <div className={`flex items-center justify-center px-4 pt-4`}>
-          <button className={`btn btn-accent w-full`}>Submit Project</button>
+          <button
+            disabled={loading || uploading}
+            className={`btn btn-accent w-full`}
+          >
+            Submit Project
+            {loading ? <ImSpinner9 className={`ml-2 animate-spin`} /> : <></>}
+          </button>
         </div>
       </form>
     </>

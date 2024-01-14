@@ -1,24 +1,23 @@
-import {  FaRegEnvelope } from "react-icons/fa";
+import { FaRegEnvelope } from "react-icons/fa";
 import { MdLockOutline } from "react-icons/md";
 import GoogleSigninButton from "@/components/google-signin-button";
-import {getServerAuthSession} from "@/server/auth";
-import {redirect} from "next/navigation";
+import { getServerAuthSession } from "@/server/auth";
+import { redirect } from "next/navigation";
 
 export default async function SignInPage() {
-
   const session = await getServerAuthSession();
 
-  if(session){
-    redirect("/")
+  if (session) {
+    redirect("/");
   }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2 ">
       <main className=" flex w-full flex-1 flex-col items-center justify-center bg-base-200 px-20 text-center">
         <div className="flex w-2/3 max-w-4xl rounded-2xl shadow-2xl ">
-          <div className="bg-base-content/10 rounded-l-2xl w-3/5 p-5">
+          <div className="w-3/5 rounded-l-2xl bg-base-content/10 p-5">
             <div className="text-left font-bold">
-              <span className="text-accent font-bold mr-1">Project</span>Finder
+              <span className="mr-1 font-bold text-accent">Project</span>Finder
             </div>
 
             <div className="py-10">
@@ -59,10 +58,7 @@ export default async function SignInPage() {
                     Forgot Password?
                   </a>
                 </div>
-                <a
-                  href="#"
-                  className="btn btn-wide btn-accent btn-outline"
-                >
+                <a href="#" className="btn btn-outline btn-accent btn-wide">
                   Sign In
                 </a>
               </div>
@@ -74,10 +70,7 @@ export default async function SignInPage() {
             <h2 className="mb-2 text-2xl font-bold">Hello Innovator!</h2>
             <div className="mb-2 inline-block w-12 border-2 border-white"></div>
             <p className="mb-10">Fill up the Details.</p>
-            <a
-              href="#"
-              className="btn btn-outline btn-accent"
-            >
+            <a href="#" className="btn btn-outline btn-accent">
               Sign Up
             </a>
           </div>

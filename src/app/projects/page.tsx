@@ -1,16 +1,17 @@
 import ProjectTile from "@/components/project-tile";
 import { CiSearch } from "react-icons/ci";
 import { FaFilter } from "react-icons/fa";
-import {api} from "@/trpc/server";
+import { api } from "@/trpc/server";
 
 export default async function Projects() {
-
-    const projects = await api.project.fetchAll.query();
+  const projects = await api.project.fetchAll.query();
 
   return (
-    <div className={`relative mt-20 flex flex-col sm:flex-row min-h-[91dvh] bg-base-200 p-8 pb-32`}>
+    <div
+      className={`relative mt-20 flex min-h-[91dvh] flex-col bg-base-200 p-8 pb-32 sm:flex-row`}
+    >
       <div
-        className={`sm:sticky mb-8 w-full sm:w-fit top-8 mr-8 h-fit rounded-xl border border-base-content/10 px-4 py-8`}
+        className={`top-8 mb-8 mr-8 h-fit w-full rounded-xl border border-base-content/10 px-4 py-8 sm:sticky sm:w-fit`}
       >
         <h3 className={`mb-6 text-center text-xl font-bold`}>
           <FaFilter
@@ -27,7 +28,7 @@ export default async function Projects() {
 
         <label className={`label text-sm`}>Project Type</label>
         <input
-          className={`input input-bordered input-sm w-full min-w-52 mb-4`}
+          className={`input input-bordered input-sm mb-4 w-full min-w-52`}
           placeholder={`e.g Web Application`}
         />
 
@@ -53,7 +54,7 @@ export default async function Projects() {
         >
           {projects.map((project, index) => (
             <ProjectTile
-                id={project.id}
+              id={project.id}
               key={index}
               title={project.name}
               description={project.description ?? ""}
@@ -71,7 +72,7 @@ export default async function Projects() {
         </div>
       </div>
       <div
-        className={`absolute bottom-4 w-[90vw] flex items-center justify-center`}
+        className={`absolute bottom-4 flex w-[90vw] items-center justify-center`}
       >
         <div className="join border border-base-content/10">
           <button className="btn join-item btn-active">1</button>

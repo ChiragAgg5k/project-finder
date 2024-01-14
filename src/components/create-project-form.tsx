@@ -119,9 +119,10 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
             />
             {tags.length > 0 && (
               <div className={`mt-4`}>
-                {tags.map((tag) => {
+                {tags.map((tag, index) => {
                   return (
                     <span
+                      key={index}
                       className={`mr-2 rounded-full bg-base-100 px-2 py-1 text-sm text-base-content/70`}
                     >
                       {tag}

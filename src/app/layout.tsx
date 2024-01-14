@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 
-import { Ubuntu} from "next/font/google";
+import { Ubuntu } from "next/font/google";
 import { cookies } from "next/headers";
 
 import { TRPCReactProvider } from "@/trpc/react";
@@ -19,7 +19,8 @@ const ubuntu = Ubuntu({
 
 export const metadata = {
   title: "Project Finder",
-  description: "Unlock Your Coding Potential: Explore, Connect, and Contribute with Project Finder – Where Tech Dreams Find Their Code.",
+  description:
+    "Unlock Your Coding Potential: Explore, Connect, and Contribute with Project Finder – Where Tech Dreams Find Their Code.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
@@ -32,9 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${ubuntu.variable}`}>
         <TRPCReactProvider cookies={cookies().toString()}>
-          <NextSSRPlugin
-              routerConfig={extractRouterConfig(ourFileRouter)}
-          />
+          <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           <Navbar />
           {children}
         </TRPCReactProvider>

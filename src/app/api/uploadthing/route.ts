@@ -1,13 +1,13 @@
 import { createNextRouteHandler } from "uploadthing/next";
 
 import { ourFileRouter } from "./core";
-import {env} from "@/env";
+import { env } from "@/env";
 
 // Export routes for Next App Router
 export const { GET, POST } = createNextRouteHandler({
-    router: ourFileRouter,
-    config: {
-        uploadthingId: env.UPLOADTHING_APP_ID,
-        uploadthingSecret: env.UPLOADTHING_SECRET
-    }
+  router: ourFileRouter,
+  config: {
+    uploadthingId: env.UPLOADTHING_APP_ID,
+    uploadthingSecret: env.UPLOADTHING_SECRET,
+  },
 });

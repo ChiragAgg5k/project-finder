@@ -1,20 +1,20 @@
-import {getServerAuthSession} from "@/server/auth";
-import {redirect} from "next/navigation";
+import { getServerAuthSession } from "@/server/auth";
+import { redirect } from "next/navigation";
 
-export default async function ProfilePage(){
-    const session = await getServerAuthSession();
+export default async function ProfilePage() {
+  const session = await getServerAuthSession();
 
-    if(!session){
-        redirect("/")
-    }
+  if (!session) {
+    redirect("/");
+  }
 
-    redirect(`/profile/${session.user.id}`);
+  redirect(`/profile/${session.user.id}`);
 
-    return(
-        <div className={`mt-20 p-8 flex-col flex items-center justify-center min-h-[90dvh] bg-base-200`}>
-            <h1 className={`text-3xl font-bold`}>
-                Loading...
-            </h1>
-        </div>
-    )
+  return (
+    <div
+      className={`mt-20 flex min-h-[90dvh] flex-col items-center justify-center bg-base-200 p-8`}
+    >
+      <h1 className={`text-3xl font-bold`}>Loading...</h1>
+    </div>
+  );
 }

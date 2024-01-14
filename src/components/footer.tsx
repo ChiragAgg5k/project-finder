@@ -2,12 +2,8 @@ export default function Footer() {
   return (
     <footer className="footer bg-neutral p-10 text-neutral-content">
       <aside>
-        <h4 className={`text-xl font-bold`}>
-          Team Obsidian
-        </h4>
-        <p>
-          Bennett University industry project
-        </p>
+        <h4 className={`text-xl font-bold`}>Team Obsidian</h4>
+        <p>Bennett University industry project</p>
       </aside>
       <nav>
         <header className="footer-title">Social</header>

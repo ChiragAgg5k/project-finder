@@ -11,9 +11,9 @@ export default async function Home() {
   return (
     <>
       <main
-        className={`flex min-h-[100dvh] pb-16 items-center justify-center bg-base-200 pt-24`}
+        className={`flex min-h-[100dvh] items-center justify-center bg-base-200 pb-16 pt-24`}
       >
-          <BackgroundCellCore />
+        <BackgroundCellCore />
         <div
           className={`pointer-events-none z-50 flex flex-col items-center justify-center md:flex-row`}
         >
@@ -22,28 +22,28 @@ export default async function Home() {
               Tech Project Discovery for
               <span className={`ml-2 text-accent`}>Passionate Innovators</span>.
             </h1>
-              <p className="py-6">
-                Unlock Your Coding Potential: Explore, Connect, and Contribute
-                with Project Finder – Where Tech Dreams Find Their Code.
-              </p>
-            <div
-            className={`flex flex-col sm:flex-row`}
-            >
-              {
-                session ? <Link
-                    href={`/projects/create`}
-                    className="btn btn-outline btn-primary  pointer-events-auto mt-6 mr-0 sm:mr-4"
+            <p className="py-6">
+              Unlock Your Coding Potential: Explore, Connect, and Contribute
+              with Project Finder – Where Tech Dreams Find Their Code.
+            </p>
+            <div className={`flex flex-col sm:flex-row`}>
+              {session ? (
+                <Link
+                  href={`/projects/create`}
+                  className="btn btn-outline btn-primary  pointer-events-auto mr-0 mt-6 sm:mr-4"
                 >
                   Upload Project
                   <IoCloudUploadOutline className={`ml-1 text-xl`} />
-                </Link> : <></>
-              }
-            <Link
-              href={session ? `/projects` : `/auth/signin`}
-              className="btn btn-outline btn-neutral btn-wide pointer-events-auto mt-6"
-            >
-              {session ? "Browse Projects" : "Get Started"}
-            </Link>
+                </Link>
+              ) : (
+                <></>
+              )}
+              <Link
+                href={session ? `/projects` : `/auth/signin`}
+                className="btn btn-outline btn-neutral btn-wide pointer-events-auto mt-6"
+              >
+                {session ? "Browse Projects" : "Get Started"}
+              </Link>
             </div>
           </div>
           <div className={`w-full px-8`}>

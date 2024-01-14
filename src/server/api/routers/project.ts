@@ -2,7 +2,7 @@ import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { z } from "zod";
 import { projects } from "@/server/db/schema";
 import { v4 } from "uuid";
-import {eq} from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 export const projectRouter = createTRPCRouter({
   create: publicProcedure
@@ -13,6 +13,7 @@ export const projectRouter = createTRPCRouter({
         projectUrl: z.string().url(),
         image: z.string().url(),
         ownerId: z.string().uuid(),
+        tags: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -23,13 +24,14 @@ export const projectRouter = createTRPCRouter({
         description: input.description,
         projectUrl: input.projectUrl,
         image: input.image,
+        tags: input.tags,
         ownerId: input.ownerId,
       });
 
       return id;
     }),
 
-    fetch: publicProcedure
+  fetch: publicProcedure
     .input(
       z.object({
         id: z.string(),
@@ -41,9 +43,7 @@ export const projectRouter = createTRPCRouter({
       });
     }),
 
-    fetchAll: publicProcedure
-        .query(async ({ ctx }) => {
-            return ctx.db.query.projects.findMany();
-        }
-    ),
+  fetchAll: publicProcedure.query(async ({ ctx }) => {
+    return ctx.db.query.projects.findMany();
+  }),
 });

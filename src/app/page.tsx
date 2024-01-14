@@ -39,7 +39,7 @@ export default async function Home() {
                 </Link> : <></>
               }
             <Link
-              href={session ? `/projects` : `/api/auth/signin`}
+              href={session ? `/projects` : `/auth/signin`}
               className="btn btn-outline btn-neutral btn-wide pointer-events-auto mt-6"
             >
               {session ? "Browse Projects" : "Get Started"}

@@ -12,6 +12,9 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
   const router = useRouter();
   const [imageName, setImageName] = useState("");
 
+  const [currentTag, setCurrentTag] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
+
   const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -40,6 +43,7 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
       description: projectDescription,
       projectUrl: projectURL,
       image: imageURL,
+      tags: tags.join(","),
       ownerId: userId,
     });
   };
@@ -74,7 +78,6 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
           placeholder={`Project Name`}
           value={projectName}
           onChange={(e) => setProjectName(e.target.value)}
-          required
           type={`text`}
         />
         <textarea
@@ -84,16 +87,54 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
           onChange={(e) => setProjectDescription(e.target.value)}
           rows={5}
         />
-        <input
-          className={`input input-bordered w-full`}
-          placeholder={`Project URL`}
-          value={projectURL}
-          type={`url`}
-          onChange={(e) => setProjectURL(e.target.value)}
-        />
+        <div className={`flex items-start`}>
+          <input
+            className={`input input-bordered mr-2 w-full`}
+            placeholder={`Project URL`}
+            value={projectURL}
+            type={`url`}
+            onChange={(e) => setProjectURL(e.target.value)}
+          />
+          <div className={`w-full`}>
+            <input
+              className={`input input-bordered w-full`}
+              placeholder={`Tags`}
+              type={`text`}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  if (currentTag === "") return;
+                  setTags([...tags, currentTag]);
+                  setCurrentTag("");
+                }
+
+                if (e.key === "Backspace") {
+                  if (currentTag === "") {
+                    const newTags = tags.slice(0, tags.length - 1);
+                    setTags(newTags);
+                  }
+                }
+              }}
+              value={currentTag}
+              onChange={(e) => setCurrentTag(e.target.value)}
+            />
+            {tags.length > 0 && (
+              <div className={`mt-4`}>
+                {tags.map((tag) => {
+                  return (
+                    <span
+                      className={`mr-2 rounded-full bg-base-100 px-2 py-1 text-sm text-base-content/70`}
+                    >
+                      {tag}
+                    </span>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
         <div className={`flex flex-col items-center justify-around`}>
           <UploadDropzone
-            className="ut-button:btn ut-button:btn-neutral ut-button:btn-sm ut-uploading:border-base-content/50 ut-readying:bg-base-100 ut-label:text-md ut-label:text-base-content ut-allowed-content:ut-uploading:text-error w-full rounded-xl bg-base-300"
+            className="ut-label:text-md w-full rounded-xl bg-base-300 ut-button:btn ut-button:btn-neutral ut-button:btn-sm ut-label:text-base-content ut-readying:bg-base-100 ut-uploading:border-base-content/50 ut-allowed-content:ut-uploading:text-error"
             endpoint="imageUploader"
             onUploadBegin={() => {
               setUploading(true);

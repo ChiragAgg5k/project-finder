@@ -7,7 +7,7 @@ export default async  function CreateProject() {
     const session = await getServerAuthSession();
 
     if(!session){
-        redirect("/api/auth/signin")
+        redirect("/auth/signin")
     }
 
   return (

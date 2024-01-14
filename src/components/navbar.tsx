@@ -19,7 +19,7 @@ export default async function Navbar() {
             {session ? <li>
               <Link href={`/profile`} className={`btn btn-sm btn-ghost font-normal`}>Profile</Link>
             </li> : <li>
-                <Link href={`/api/auth/signin`} className={`text-nowrap`}>
+                <Link href={`/auth/signin`} className={`text-nowrap`}>
                     Sign In
                 </Link>
             </li>}

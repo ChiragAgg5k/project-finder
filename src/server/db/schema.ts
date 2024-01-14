@@ -91,6 +91,7 @@ export const projects = mysqlTable(
     description: text("description"),
     image: varchar("image", { length: 255 }),
     projectUrl: varchar("projectUrl", { length: 255 }),
+      tags: text("tags"),
     ownerId: varchar("ownerId", { length: 255 }).notNull(),
       createdAt: timestamp("createdAt", {
           mode: "date",

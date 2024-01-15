@@ -25,7 +25,7 @@ export default async function ProjectPage({
 
   return (
     <div
-      className={`mt-20 flex min-h-[90dvh] flex-col-reverse items-center justify-center bg-base-200 p-8 md:flex-row`}
+      className={`mt-20 flex min-h-[91dvh] flex-col-reverse items-center justify-center bg-base-200 p-8 md:flex-row`}
     >
       <div className={`w-full pr-8`}>
         <h1 className={`mb-4 text-center text-3xl font-bold`}>

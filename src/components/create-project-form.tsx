@@ -6,6 +6,7 @@ import { UploadDropzone } from "@/utils/uploadthing";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 import { ImSpinner9 } from "react-icons/im";
+import {IoIosClose} from "react-icons/io";
 
 export default function CreateProjectForm({ userId }: { userId: string }) {
   const githubConnected = false;
@@ -24,6 +25,10 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
   const [imageURL, setImageURL] = useState("");
 
   const createProject = api.project.create.useMutation();
+
+  const removeTag = (index: number) => {
+    setTags(tags.filter((_, i) => i !== index));
+  }
 
   useEffect(() => {
     if (createProject.isSuccess) {
@@ -74,7 +79,7 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
       <hr className={`border-accent py-4`} />
       <form className={`space-y-6`} onSubmit={handleSubmit}>
         <input
-          className={`input input-bordered w-full`}
+          className={`input input-bordered w-full text-sm`}
           placeholder={`Project Name`}
           value={projectName}
           onChange={(e) => setProjectName(e.target.value)}
@@ -89,7 +94,7 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
         />
         <div className={`flex items-start`}>
           <input
-            className={`input input-bordered mr-2 w-full`}
+            className={`input input-bordered mr-2 w-full text-sm`}
             placeholder={`Project URL`}
             value={projectURL}
             type={`url`}
@@ -97,8 +102,8 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
           />
           <div className={`w-full`}>
             <input
-              className={`input input-bordered w-full`}
-              placeholder={`Tags`}
+              className={`input input-bordered w-full text-sm`}
+              placeholder={`Tags (Press Enter to add)`}
               type={`text`}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -121,12 +126,13 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
               <div className={`mt-4`}>
                 {tags.map((tag, index) => {
                   return (
-                    <span
-                      key={index}
-                      className={`mr-2 rounded-full bg-base-100 px-2 py-1 text-sm text-base-content/70`}
-                    >
-                      {tag}
-                    </span>
+                      <span className="badge text-nowrap" key={index}>
+                        {tag}
+                        <IoIosClose
+                          className={`ml-1 text-lg hover:cursor-pointer hover:bg-base-200`}
+                          onClick={() => removeTag(index)}
+                        />
+                      </span>
                   );
                 })}
               </div>

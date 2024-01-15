@@ -2,13 +2,32 @@
 
 import ProjectTile from "@/components/project-tile";
 import { CiSearch } from "react-icons/ci";
-import { FaFilter } from "react-icons/fa";
+import { FaFilter} from "react-icons/fa";
+import { IoIosClose } from "react-icons/io";
 import { api } from "@/trpc/react";
-import {useState} from "react";
+import { useState } from "react";
+
+const filter = (selectedTags: string[], search: string, project: any) => {
+  return (
+    (selectedTags.length === 0 ||
+      project.tags
+        ?.split(",")
+        .some((tag: any) => selectedTags.includes(tag))) &&
+    (project.name.toLowerCase().includes(search.toLowerCase()) ||
+      project.description?.toLowerCase().includes(search.toLowerCase()))
+  );
+};
 
 export default function Projects() {
   const projects = api.project.fetchAll.useQuery();
   const [search, setSearch] = useState("");
+
+  const [currentTag, setCurrentTag] = useState<string>("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  const removeTag = (index: number) => {
+    setSelectedTags(selectedTags.filter((_, i) => i !== index));
+  }
 
   return (
     <div
@@ -40,7 +59,33 @@ export default function Projects() {
         <input
           className={`input input-bordered input-sm w-full min-w-52`}
           placeholder={`e.g React`}
+          value={currentTag}
+          onChange={(e) => setCurrentTag(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              setSelectedTags([...selectedTags, currentTag]);
+              setCurrentTag("");
+            }
+          }}
         />
+        {selectedTags.length > 0 && (
+          <ul
+            className={`mt-4 flex flex-wrap items-center justify-end space-x-4`}
+          >
+            {selectedTags.map(
+              (tag, index) =>
+                tag != "" && (
+                  <li key={index}>
+                    <span className="badge text-nowrap">{tag}
+                      <IoIosClose className={`text-lg ml-1 hover:bg-base-200 hover:cursor-pointer`} onClick={
+                        () => removeTag(index)
+                      } />
+                    </span>
+                  </li>
+                ),
+            )}
+          </ul>
+        )}
         <button className={`btn btn-neutral mt-8 w-full`}>Apply Filters</button>
       </div>
       <div className={`w-full`}>
@@ -58,36 +103,41 @@ export default function Projects() {
         <div
           className={`grid grid-cols-1 gap-8 md:grid-cols-2  lg:grid-cols-3`}
         >
-          {
-            projects.fetchStatus === "fetching" ? (
-                <p className={`col-span-3 mt-36 text-center text-base-content/70`}>
-                    Loading...
-                </p>
-                ) : (
-                <>
-                  {projects.data?.map((project, index) => (
-                      (project.name.toLowerCase().includes(search.toLowerCase()) || project.description?.toLowerCase().includes(search.toLowerCase())) &&
+          {projects.fetchStatus === "fetching" ? (
+            <p className={`col-span-3 mt-36 text-center text-base-content/70`}>
+              Loading...
+            </p>
+          ) : (
+            <>
+              {projects.data
+                ?.filter((project) => filter(selectedTags, search, project))
+                .map(
+                  (project, index) =>
+                    project && (
                       <ProjectTile
-                          id={project.id}
-                          searchedQuery={search}
-                          key={index}
-                          title={project.name}
-                          description={project.description ?? ""}
-                          image={project.image ?? ""}
-                          tags={project.tags?.split(",") ?? []}
+                        id={project.id}
+                        searchedQuery={search}
+                        key={index}
+                        title={project.name}
+                        description={project.description ?? ""}
+                        image={project.image ?? ""}
+                        tags={project.tags?.split(",") ?? []}
+                        searchedTags={selectedTags}
                       />
-                  ))}
-                  {projects.data?.length === 0 ? (
-                      <p className={`col-span-3 mt-24 text-center text-base-content/50`}>
-                        No projects found
-                      </p>
-                  ) : (
-                      <></>
-                  )}
-                </>
-                )
-          }
+                    ),
+                )}
+            </>
+          )}
         </div>
+        {projects.isFetched && projects.data?.filter((project) => filter(selectedTags, search, project)).length === 0 ? (
+            <p
+                className={`flex font-bold items-center justify-center min-h-[60dvh] text-base-content/70`}
+            >
+              No projects found matching your search...
+            </p>
+        ) : (
+            <></>
+        )}
       </div>
       <div
         className={`absolute bottom-4 flex w-[90vw] items-center justify-center`}

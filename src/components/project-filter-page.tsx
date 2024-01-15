@@ -113,22 +113,18 @@ export default function ProjectFilterPage({
 
         {showGithubProjects ? (
           <button
-              onClick={
-                () => {
-                  setShowGithubProjects(false);
-                }
-              }
+            onClick={() => {
+              setShowGithubProjects(false);
+            }}
             className={`btn btn-outline btn-neutral w-full border-base-content/30`}
           >
             Back to Projects
           </button>
         ) : (
           <button
-              onClick={
-                () => {
-                  setShowGithubProjects(true);
-                }
-              }
+            onClick={() => {
+              setShowGithubProjects(true);
+            }}
             className={`btn btn-outline btn-neutral w-full border-base-content/30`}
           >
             Trending Github Projects
@@ -156,26 +152,28 @@ export default function ProjectFilterPage({
             </p>
           ) : (
             <>
-              {!showGithubProjects && projects.data
-                ?.filter((project) => filter(selectedTags, search, project))
-                .map(
-                  (project, index) =>
-                    project && (
-                      <ProjectTile
-                        id={project.id}
-                        searchedQuery={search}
-                        key={index}
-                        title={project.name}
-                        description={project.description ?? ""}
-                        image={project.image ?? ""}
-                        tags={project.tags?.split(",") ?? []}
-                        searchedTags={selectedTags}
-                        likes={project.likes ?? 0}
-                        isSignedIn={isSignedIn}
-                      />
-                    ),
-                )}
-              {showGithubProjects && githubTrendingProjects.data &&
+              {!showGithubProjects &&
+                projects.data
+                  ?.filter((project) => filter(selectedTags, search, project))
+                  .map(
+                    (project, index) =>
+                      project && (
+                        <ProjectTile
+                          id={project.id}
+                          searchedQuery={search}
+                          key={index}
+                          title={project.name}
+                          description={project.description ?? ""}
+                          image={project.image ?? ""}
+                          tags={project.tags?.split(",") ?? []}
+                          searchedTags={selectedTags}
+                          likes={project.likes ?? 0}
+                          isSignedIn={isSignedIn}
+                        />
+                      ),
+                  )}
+              {showGithubProjects &&
+                githubTrendingProjects.data &&
                 githubTrendingProjects.data.map((project, index) => (
                   <ProjectTile
                     id={undefined}
@@ -189,6 +187,7 @@ export default function ProjectFilterPage({
                     image={""}
                     isSignedIn={isSignedIn}
                     isGithubProject={true}
+                    repoUrl={project.html_url}
                   />
                 ))}
             </>
@@ -207,16 +206,16 @@ export default function ProjectFilterPage({
           <></>
         )}
       </div>
-      <div
-        className={`absolute bottom-4 flex w-[90vw] items-center justify-center`}
-      >
-        <div className="join border border-base-content/10">
-          <button className="btn join-item btn-active">1</button>
-          <button className="btn join-item">2</button>
-          <button className="btn join-item">3</button>
-          <button className="btn join-item">4</button>
-        </div>
-      </div>
+      {/*<div*/}
+      {/*  className={`absolute bottom-4 flex w-[90vw] items-center justify-center`}*/}
+      {/*>*/}
+      {/*  <div className="join border border-base-content/10">*/}
+      {/*    <button className="btn join-item btn-active">1</button>*/}
+      {/*    <button className="btn join-item">2</button>*/}
+      {/*    <button className="btn join-item">3</button>*/}
+      {/*    <button className="btn join-item">4</button>*/}
+      {/*  </div>*/}
+      {/*</div>*/}
     </div>
   );
 }

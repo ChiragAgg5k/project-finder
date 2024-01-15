@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 
 import { Ubuntu } from "next/font/google";
 import { cookies } from "next/headers";
+import NextTopLoader from 'nextjs-toploader';
 
 import { TRPCReactProvider } from "@/trpc/react";
 import Navbar from "@/components/navbar";
@@ -33,6 +34,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${ubuntu.variable}`}>
         <TRPCReactProvider cookies={cookies().toString()}>
+          <NextTopLoader
+              color="#AC89F3"
+              showSpinner={false}
+          />
           <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           <Navbar />
           {children}

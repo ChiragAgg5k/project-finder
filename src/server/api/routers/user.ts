@@ -18,7 +18,7 @@ export const userRouter = createTRPCRouter({
         .limit(1);
     }),
 
-    fetchLikedProjects: publicProcedure
+  fetchLikedProjects: publicProcedure
     .input(
       z.object({
         userId: z.string().uuid(),

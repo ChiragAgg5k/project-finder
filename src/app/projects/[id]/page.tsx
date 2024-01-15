@@ -46,7 +46,10 @@ export default async function ProjectPage({
           {project.description}
         </p>
         <div className={`flex items-center justify-center`}>
-          <Link href={project.projectUrl ?? ""} className={`btn btn-outline btn-accent btn-wide`}>
+          <Link
+            href={project.projectUrl ?? ""}
+            className={`btn btn-outline btn-accent btn-wide`}
+          >
             View Project
           </Link>
         </div>

@@ -100,7 +100,7 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
             type={`text`}
           />
           <select
-              defaultValue={""}
+            defaultValue={""}
             className={`select select-bordered text-sm`}
             onChange={(e) => setProjectType(e.target.value as ProjectType)}
           >

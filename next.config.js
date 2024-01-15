@@ -14,8 +14,8 @@ const config = {
       },
       {
         protocol: "https",
-        hostname: "socialify.git.ci"
-      }
+        hostname: "socialify.git.ci",
+      },
     ],
   },
 };

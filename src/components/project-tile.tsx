@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Highlighter from "react-highlight-words";
 import LikeButton from "@/components/like-button";
-import {FaGithub} from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 
 export default function ProjectTile({
   id,
@@ -13,8 +13,9 @@ export default function ProjectTile({
   likes,
   searchedQuery,
   searchedTags,
-    isSignedIn,
-    isGithubProject
+  isSignedIn,
+  isGithubProject,
+    repoUrl,
 }: {
   id: string | undefined;
   title: string;
@@ -24,26 +25,29 @@ export default function ProjectTile({
   likes: number;
   searchedQuery: string;
   searchedTags: string[];
-    isSignedIn: boolean;
-    isGithubProject?: boolean;
+  isSignedIn: boolean;
+  isGithubProject?: boolean;
+    repoUrl?: string;
 }) {
   return (
     <div
-      className={`relative flex h-full overflow-auto flex-col rounded-xl border border-base-content/10 px-5 pb-10 pt-5 hover:border-base-content/20`}
+      className={`relative flex h-full flex-col overflow-auto rounded-xl border border-base-content/10 px-5 pb-10 pt-5 hover:border-base-content/20`}
     >
-      <Link href={`/projects/${id}`}>
-        {image && <Image
-          src={image}
-          alt={``}
-          width={1024}
-          height={1024}
-          placeholder={`blur`}
-          blurDataURL={image}
-          className={`rounded-lg object-cover`}
-        />}
+      <Link href={isGithubProject ? repoUrl! : `/projects/${id}`}>
+        {image && (
+          <Image
+            src={image}
+            alt={``}
+            width={1024}
+            height={1024}
+            placeholder={`blur`}
+            blurDataURL={image}
+            className={`rounded-lg object-cover`}
+          />
+        )}
       </Link>
       <div className={`py-4`}>
-        <Link href={`/projects/${id}`}>
+        <Link href={isGithubProject ? repoUrl!: `/projects/${id}`}>
           <h3 className={`mb-2 text-xl font-bold`}>
             <Highlighter
               searchWords={[searchedQuery]}
@@ -51,11 +55,11 @@ export default function ProjectTile({
               textToHighlight={title}
             />
           </h3>
-            {
-              isGithubProject && (
-                <FaGithub className={`text-2xl text-base-content/50 absolute top-4 right-4`}/>
-              )
-            }
+          {isGithubProject && (
+            <FaGithub
+              className={`absolute right-4 top-4 text-2xl text-base-content/50`}
+            />
+          )}
           <p className={`line-clamp-2 text-sm text-base-content/50`}>
             <Highlighter
               searchWords={[searchedQuery]}

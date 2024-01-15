@@ -51,7 +51,10 @@ export default async function Home() {
               <Image
                 src={`/people.jpg`}
                 alt={``}
-                fill
+                width={1000}
+                height={700}
+                placeholder={`blur`}
+                blurDataURL={`/people.jpg`}
                 className={`rounded-3xl object-cover`}
               />
             </div>

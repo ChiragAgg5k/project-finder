@@ -1,12 +1,14 @@
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "@/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { z } from "zod";
 import { projects } from "@/server/db/schema";
 import { v4 } from "uuid";
-import {eq, sql} from "drizzle-orm";
+import { eq } from "drizzle-orm";
+import { Octokit } from "octokit";
+import { env } from "@/env";
+
+const octokit = new Octokit({
+  auth: env.GITHUB_ACCESS_TOKEN,
+});
 
 export const projectRouter = createTRPCRouter({
   create: publicProcedure
@@ -51,5 +53,22 @@ export const projectRouter = createTRPCRouter({
 
   fetchAll: publicProcedure.query(async ({ ctx }) => {
     return ctx.db.query.projects.findMany();
+  }),
+
+  fetchGithubTrending: publicProcedure.query(async ({ ctx }) => {
+    const date = new Date();
+    date.setDate(date.getDate() - 30);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const dateString = `${year}-${month}-${day}`;
+    const result = await octokit.request("GET /search/repositories", {
+      q: `created:>${dateString}`,
+      sort: "stars",
+      order: "desc",
+      per_page: 18,
+    });
+
+    return result.data.items;
   }),
 });

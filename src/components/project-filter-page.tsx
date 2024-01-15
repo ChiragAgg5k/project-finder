@@ -24,8 +24,10 @@ export default function ProjectFilterPage({
   isSignedIn: boolean;
 }) {
   const projects = api.project.fetchAll.useQuery();
+  const githubTrendingProjects = api.project.fetchGithubTrending.useQuery();
   const [search, setSearch] = useState("");
 
+  const [showGithubProjects, setShowGithubProjects] = useState(false);
   const [currentTag, setCurrentTag] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
@@ -37,74 +39,101 @@ export default function ProjectFilterPage({
     <div
       className={`relative mt-20 flex min-h-[91dvh] flex-col bg-base-200 p-8 pb-32 sm:flex-row`}
     >
-      <div
-        className={`top-8 mb-8 mr-8 h-fit w-full rounded-xl border border-base-content/10 px-4 py-8 sm:sticky sm:w-fit`}
-      >
-        <h3 className={`mb-6 text-center text-xl font-bold`}>
-          <FaFilter
-            className={`mr-2 inline-block text-lg text-base-content/50`}
-          />
-          Filter Projects
-        </h3>
-        <div className={`mb-4 flex items-center justify-center`}>
-          <input type={`checkbox`} className={`checkbox mr-2`} />
-          <p className={`text-sm `}>As per my preferences</p>
-        </div>
+      <div className={`top-8 mb-8 mr-8 h-fit w-full sm:sticky sm:w-fit`}>
+        <div className={`rounded-xl border border-base-content/10 px-4 py-8`}>
+          <h3 className={`mb-6 text-center text-xl font-bold`}>
+            <FaFilter
+              className={`mr-2 inline-block text-lg text-base-content/50`}
+            />
+            Filter Projects
+          </h3>
+          <div className={`mb-4 flex items-center justify-center`}>
+            <input type={`checkbox`} className={`checkbox mr-2`} />
+            <p className={`text-sm `}>As per my preferences</p>
+          </div>
 
+          <hr className={`mb-4 border-base-content/10`} />
+
+          <label className={`label text-sm`}>Project Type</label>
+          <select
+            className={`select select-bordered select-sm mb-4 w-full text-sm`}
+            defaultValue={""}
+          >
+            <option disabled={true} value="">
+              Select project type
+            </option>
+            <option value="web">Web App</option>
+            <option value="api">API</option>
+            <option value="mobile">Mobile App</option>
+            <option value="game">Game</option>
+            <option value="ai">Artificial Intelligence</option>
+            <option value="ml">Machine Learning</option>
+            <option value="desktop">Desktop App</option>
+            <option value="other">Other</option>
+          </select>
+
+          <label className={`label text-sm`}>Technologies</label>
+          <input
+            className={`input input-bordered input-sm w-full min-w-52`}
+            placeholder={`e.g React`}
+            value={currentTag}
+            onChange={(e) => setCurrentTag(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                setSelectedTags([...selectedTags, currentTag]);
+                setCurrentTag("");
+              }
+            }}
+          />
+          {selectedTags.length > 0 && (
+            <ul
+              className={`mt-4 flex flex-wrap items-center justify-end space-x-4`}
+            >
+              {selectedTags.map(
+                (tag, index) =>
+                  tag != "" && (
+                    <li key={index}>
+                      <span className="badge text-nowrap">
+                        {tag}
+                        <IoIosClose
+                          className={`ml-1 text-lg hover:cursor-pointer hover:bg-base-200`}
+                          onClick={() => removeTag(index)}
+                        />
+                      </span>
+                    </li>
+                  ),
+              )}
+            </ul>
+          )}
+          <button className={`btn btn-neutral mt-8 w-full`}>
+            Apply Filters
+          </button>
+        </div>
         <hr className={`mb-4 border-base-content/10`} />
 
-        <label className={`label text-sm`}>Project Type</label>
-        <select
-          className={`select select-bordered select-sm mb-4 w-full text-sm`}
-          defaultValue={""}
-        >
-          <option disabled={true} value="">
-            Select project type
-          </option>
-          <option value="web">Web App</option>
-          <option value="api">API</option>
-          <option value="mobile">Mobile App</option>
-          <option value="game">Game</option>
-          <option value="ai">Artificial Intelligence</option>
-          <option value="ml">Machine Learning</option>
-          <option value="desktop">Desktop App</option>
-          <option value="other">Other</option>
-        </select>
-
-        <label className={`label text-sm`}>Technologies</label>
-        <input
-          className={`input input-bordered input-sm w-full min-w-52`}
-          placeholder={`e.g React`}
-          value={currentTag}
-          onChange={(e) => setCurrentTag(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              setSelectedTags([...selectedTags, currentTag]);
-              setCurrentTag("");
-            }
-          }}
-        />
-        {selectedTags.length > 0 && (
-          <ul
-            className={`mt-4 flex flex-wrap items-center justify-end space-x-4`}
+        {showGithubProjects ? (
+          <button
+              onClick={
+                () => {
+                  setShowGithubProjects(false);
+                }
+              }
+            className={`btn btn-outline btn-neutral w-full border-base-content/30`}
           >
-            {selectedTags.map(
-              (tag, index) =>
-                tag != "" && (
-                  <li key={index}>
-                    <span className="badge text-nowrap">
-                      {tag}
-                      <IoIosClose
-                        className={`ml-1 text-lg hover:cursor-pointer hover:bg-base-200`}
-                        onClick={() => removeTag(index)}
-                      />
-                    </span>
-                  </li>
-                ),
-            )}
-          </ul>
+            Back to Projects
+          </button>
+        ) : (
+          <button
+              onClick={
+                () => {
+                  setShowGithubProjects(true);
+                }
+              }
+            className={`btn btn-outline btn-neutral w-full border-base-content/30`}
+          >
+            Trending Github Projects
+          </button>
         )}
-        <button className={`btn btn-neutral mt-8 w-full`}>Apply Filters</button>
       </div>
       <div className={`w-full`}>
         <div className={`w-full`}>
@@ -127,7 +156,7 @@ export default function ProjectFilterPage({
             </p>
           ) : (
             <>
-              {projects.data
+              {!showGithubProjects && projects.data
                 ?.filter((project) => filter(selectedTags, search, project))
                 .map(
                   (project, index) =>
@@ -146,6 +175,22 @@ export default function ProjectFilterPage({
                       />
                     ),
                 )}
+              {showGithubProjects && githubTrendingProjects.data &&
+                githubTrendingProjects.data.map((project, index) => (
+                  <ProjectTile
+                    id={undefined}
+                    searchedQuery={search}
+                    key={index}
+                    title={project.name}
+                    description={project.description ?? ""}
+                    tags={[]}
+                    searchedTags={selectedTags}
+                    likes={project.stargazers_count ?? 0}
+                    image={""}
+                    isSignedIn={isSignedIn}
+                    isGithubProject={true}
+                  />
+                ))}
             </>
           )}
         </div>

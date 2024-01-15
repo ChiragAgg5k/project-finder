@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Highlighter from "react-highlight-words";
 import LikeButton from "@/components/like-button";
+import {FaGithub} from "react-icons/fa";
 
 export default function ProjectTile({
   id,
@@ -12,9 +13,10 @@ export default function ProjectTile({
   likes,
   searchedQuery,
   searchedTags,
-    isSignedIn
+    isSignedIn,
+    isGithubProject
 }: {
-  id: string;
+  id: string | undefined;
   title: string;
   description: string;
   image: string;
@@ -23,13 +25,14 @@ export default function ProjectTile({
   searchedQuery: string;
   searchedTags: string[];
     isSignedIn: boolean;
+    isGithubProject?: boolean;
 }) {
   return (
     <div
-      className={`relative flex h-full flex-col rounded-xl border border-base-content/10 px-5 pb-10 pt-5 hover:border-base-content/20`}
+      className={`relative flex h-full overflow-auto flex-col rounded-xl border border-base-content/10 px-5 pb-10 pt-5 hover:border-base-content/20`}
     >
       <Link href={`/projects/${id}`}>
-        <Image
+        {image && <Image
           src={image}
           alt={``}
           width={1024}
@@ -37,7 +40,7 @@ export default function ProjectTile({
           placeholder={`blur`}
           blurDataURL={image}
           className={`rounded-lg object-cover`}
-        />
+        />}
       </Link>
       <div className={`py-4`}>
         <Link href={`/projects/${id}`}>
@@ -48,6 +51,11 @@ export default function ProjectTile({
               textToHighlight={title}
             />
           </h3>
+            {
+              isGithubProject && (
+                <FaGithub className={`text-2xl text-base-content/50 absolute top-4 right-4`}/>
+              )
+            }
           <p className={`line-clamp-2 text-sm text-base-content/50`}>
             <Highlighter
               searchWords={[searchedQuery]}

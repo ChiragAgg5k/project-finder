@@ -70,7 +70,7 @@ export const projectRouter = createTRPCRouter({
       q: `created:>${dateString}`,
       sort: "stars",
       order: "desc",
-      per_page: 18,
+      per_page: 36,
     });
 
     return result.data.items;

@@ -1,14 +1,6 @@
-import { relations, sql } from "drizzle-orm";
-import {
-  index,
-  int,
-  mysqlTableCreator,
-  primaryKey,
-  text,
-  timestamp,
-  varchar,
-} from "drizzle-orm/mysql-core";
-import { type AdapterAccount } from "next-auth/adapters";
+import {relations, sql} from "drizzle-orm";
+import {index, int, mysqlTableCreator, primaryKey, text, timestamp, varchar,} from "drizzle-orm/mysql-core";
+import {type AdapterAccount} from "next-auth/adapters";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -26,6 +18,7 @@ export const users = mysqlTable("user", {
     mode: "date",
     fsp: 3,
   }).default(sql`CURRENT_TIMESTAMP(3)`),
+  likedProjects: text("likedProjects"),
   image: varchar("image", { length: 255 }),
 });
 
@@ -100,6 +93,8 @@ export const projects = mysqlTable(
     image: varchar("image", { length: 255 }),
     projectUrl: varchar("projectUrl", { length: 255 }),
     tags: text("tags"),
+    type: varchar("type", { length: 255 }),
+    likes: int("likes").default(0),
     ownerId: varchar("ownerId", { length: 255 }).notNull(),
     createdAt: timestamp("createdAt", {
       mode: "date",

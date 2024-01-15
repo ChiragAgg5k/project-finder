@@ -17,4 +17,24 @@ export const userRouter = createTRPCRouter({
         .where(eq(users.id, input.userId))
         .limit(1);
     }),
+
+    fetchLikedProjects: publicProcedure
+    .input(
+      z.object({
+        userId: z.string().uuid(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db
+        .select()
+        .from(users)
+        .where(eq(users.id, input.userId))
+        .limit(1);
+
+      if (!user[0]) {
+        return [];
+      }
+
+      return user[0].likedProjects;
+    }),
 });

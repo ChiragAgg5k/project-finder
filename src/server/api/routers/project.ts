@@ -1,8 +1,12 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 import { z } from "zod";
 import { projects } from "@/server/db/schema";
 import { v4 } from "uuid";
-import { eq } from "drizzle-orm";
+import {eq, sql} from "drizzle-orm";
 
 export const projectRouter = createTRPCRouter({
   create: publicProcedure
@@ -14,6 +18,7 @@ export const projectRouter = createTRPCRouter({
         image: z.string().url(),
         ownerId: z.string().uuid(),
         tags: z.string(),
+        type: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -26,6 +31,7 @@ export const projectRouter = createTRPCRouter({
         image: input.image,
         tags: input.tags,
         ownerId: input.ownerId,
+        type: input.type,
       });
 
       return id;

@@ -6,7 +6,18 @@ import { UploadDropzone } from "@/utils/uploadthing";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 import { ImSpinner9 } from "react-icons/im";
-import {IoIosClose} from "react-icons/io";
+import { IoIosClose } from "react-icons/io";
+import { CiGlobe, CiHashtag } from "react-icons/ci";
+
+type ProjectType =
+  | "web"
+  | "api"
+  | "mobile"
+  | "game"
+  | "ai"
+  | "ml"
+  | "desktop"
+  | "other";
 
 export default function CreateProjectForm({ userId }: { userId: string }) {
   const githubConnected = false;
@@ -20,6 +31,7 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
   const [loading, setLoading] = useState(false);
 
   const [projectName, setProjectName] = useState("");
+  const [projectType, setProjectType] = useState<ProjectType>();
   const [projectDescription, setProjectDescription] = useState("");
   const [projectURL, setProjectURL] = useState("");
   const [imageURL, setImageURL] = useState("");
@@ -28,7 +40,7 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
 
   const removeTag = (index: number) => {
     setTags(tags.filter((_, i) => i !== index));
-  }
+  };
 
   useEffect(() => {
     if (createProject.isSuccess) {
@@ -50,6 +62,7 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
       image: imageURL,
       tags: tags.join(","),
       ownerId: userId,
+      type: projectType || "other",
     });
   };
 
@@ -78,13 +91,32 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
       )}
       <hr className={`border-accent py-4`} />
       <form className={`space-y-6`} onSubmit={handleSubmit}>
-        <input
-          className={`input input-bordered w-full text-sm`}
-          placeholder={`Project Name`}
-          value={projectName}
-          onChange={(e) => setProjectName(e.target.value)}
-          type={`text`}
-        />
+        <div className={`flex w-full`}>
+          <input
+            className={`input input-bordered mr-2 w-full text-sm`}
+            placeholder={`Project Name`}
+            value={projectName}
+            onChange={(e) => setProjectName(e.target.value)}
+            type={`text`}
+          />
+          <select
+              defaultValue={""}
+            className={`select select-bordered text-sm`}
+            onChange={(e) => setProjectType(e.target.value as ProjectType)}
+          >
+            <option disabled={true} value="">
+              Select project type
+            </option>
+            <option value="web">Web App</option>
+            <option value="api">API</option>
+            <option value="mobile">Mobile App</option>
+            <option value="game">Game</option>
+            <option value="ai">Artificial Intelligence</option>
+            <option value="ml">Machine Learning</option>
+            <option value="desktop">Desktop App</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
         <textarea
           className={`textarea textarea-bordered w-full`}
           placeholder={`Project Description`}
@@ -93,14 +125,19 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
           rows={5}
         />
         <div className={`flex items-start`}>
-          <input
-            className={`input input-bordered mr-2 w-full text-sm`}
-            placeholder={`Project URL`}
-            value={projectURL}
-            type={`url`}
-            onChange={(e) => setProjectURL(e.target.value)}
-          />
-          <div className={`w-full`}>
+          <div className={`relative mr-2 w-full`}>
+            <input
+              className={`input input-bordered w-full text-sm`}
+              placeholder={`Project URL`}
+              value={projectURL}
+              type={`url`}
+              onChange={(e) => setProjectURL(e.target.value)}
+            />
+            <CiGlobe
+              className={`absolute right-3 top-[0.8rem] text-xl text-base-content/50`}
+            />
+          </div>
+          <div className={`relative w-full`}>
             <input
               className={`input input-bordered w-full text-sm`}
               placeholder={`Tags (Press Enter to add)`}
@@ -122,17 +159,18 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
               value={currentTag}
               onChange={(e) => setCurrentTag(e.target.value)}
             />
+            <CiHashtag className={`absolute right-3 top-[0.8rem] text-xl`} />
             {tags.length > 0 && (
               <div className={`mt-4`}>
                 {tags.map((tag, index) => {
                   return (
-                      <span className="badge text-nowrap" key={index}>
-                        {tag}
-                        <IoIosClose
-                          className={`ml-1 text-lg hover:cursor-pointer hover:bg-base-200`}
-                          onClick={() => removeTag(index)}
-                        />
-                      </span>
+                    <span className="badge text-nowrap" key={index}>
+                      {tag}
+                      <IoIosClose
+                        className={`ml-1 text-lg hover:cursor-pointer hover:bg-base-200`}
+                        onClick={() => removeTag(index)}
+                      />
+                    </span>
                   );
                 })}
               </div>

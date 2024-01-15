@@ -1,4 +1,8 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 import { z } from "zod";
 import { projects } from "@/server/db/schema";
 import { v4 } from "uuid";
@@ -71,4 +75,39 @@ export const projectRouter = createTRPCRouter({
 
     return result.data.items;
   }),
+
+  fetchGithubSearch: publicProcedure
+    .input(
+      z.object({
+        query: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      if (input.query === "") return;
+
+      const result = await octokit.request("GET /search/repositories", {
+        q: input.query,
+        sort: "stars",
+        order: "desc",
+        per_page: 6,
+      });
+
+      return result.data.items;
+    }),
+
+  incrementLikes: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        currentLikes: z.number(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db
+        .update(projects)
+        .set({
+          likes: input.currentLikes + 1,
+        })
+        .where(eq(projects.id, input.id));
+    }),
 });

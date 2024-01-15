@@ -15,7 +15,7 @@ export default function ProjectTile({
   searchedTags,
   isSignedIn,
   isGithubProject,
-    repoUrl,
+  repoUrl,
 }: {
   id: string | undefined;
   title: string;
@@ -27,7 +27,8 @@ export default function ProjectTile({
   searchedTags: string[];
   isSignedIn: boolean;
   isGithubProject?: boolean;
-    repoUrl?: string;
+  repoUrl?: string;
+  selectedTags?: string[];
 }) {
   return (
     <div
@@ -47,7 +48,7 @@ export default function ProjectTile({
         )}
       </Link>
       <div className={`py-4`}>
-        <Link href={isGithubProject ? repoUrl!: `/projects/${id}`}>
+        <Link href={isGithubProject ? repoUrl! : `/projects/${id}`}>
           <h3 className={`mb-2 text-xl font-bold`}>
             <Highlighter
               searchWords={[searchedQuery]}
@@ -76,20 +77,21 @@ export default function ProjectTile({
               (tag, index) =>
                 tag != "" && (
                   <li key={index}>
-                    <span
-                      className={`badge text-nowrap
+                    <Link
+                      href={`/projects?search=${searchedQuery}&tags=${searchedTags.includes(tag) ? searchedTags.filter((t) => t !== tag).join(",") : searchedTags.concat(tag).join(",")}`}
+                      className={`badge text-nowrap hover:badge-outline
                     ${searchedTags.includes(tag) ? `badge-accent badge-outline` : ``}
                     `}
                     >
                       {tag}
-                    </span>
+                    </Link>
                   </li>
                 ),
             )}
           </ul>
         )}
 
-        <LikeButton likes={likes} isSignedIn={isSignedIn} />
+        <LikeButton likes={likes} isSignedIn={isSignedIn} projectId={id} />
       </div>
     </div>
   );

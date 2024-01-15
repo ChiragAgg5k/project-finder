@@ -1,19 +1,22 @@
 "use client";
 
-import { AiOutlineLike } from "react-icons/ai";
-import { AiFillLike } from "react-icons/ai";
+import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { useState } from "react";
 import { api } from "@/trpc/react";
 
 export default function LikeButton({
   likes,
   isSignedIn,
+  projectId,
 }: {
   likes: number;
   isSignedIn: boolean;
+  projectId: string | undefined;
 }) {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
+
+  const incrementLike = api.project.incrementLikes.useMutation();
 
   return (
     <>
@@ -22,7 +25,16 @@ export default function LikeButton({
         disabled={!isSignedIn}
         onClick={() => {
           setLiked(!liked);
-            setLikeCount(likeCount + (liked ? -1 : 1));
+          setLikeCount(likeCount + (liked ? -1 : 1));
+
+          if (!projectId) return;
+
+          if (!liked) {
+            incrementLike.mutate({
+              id: projectId,
+              currentLikes: likeCount,
+            });
+          }
         }}
       >
         {liked ? (

@@ -4,8 +4,9 @@ import { FaFilter } from "react-icons/fa";
 import { IoIosClose } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import ProjectTile from "@/components/project-tile";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { api } from "@/trpc/react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const filter = (selectedTags: string[], search: string, project: any) => {
   return (
@@ -27,13 +28,34 @@ export default function ProjectFilterPage({
   const githubTrendingProjects = api.project.fetchGithubTrending.useQuery();
   const [search, setSearch] = useState("");
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get("search");
+  const searchTags = searchParams.get("tags");
+
   const [showGithubProjects, setShowGithubProjects] = useState(false);
   const [currentTag, setCurrentTag] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
+  const githubSearchedProjects = api.project.fetchGithubSearch.useQuery({
+    query: search,
+  });
+
   const removeTag = (index: number) => {
     setSelectedTags(selectedTags.filter((_, i) => i !== index));
   };
+
+  useEffect(() => {
+    if (searchTags) {
+      setSelectedTags(searchTags.split(","));
+    }
+  }, [searchTags]);
+
+  useEffect(() => {
+    if (searchQuery) {
+      setSearch(searchQuery);
+    }
+  }, [searchQuery]);
 
   return (
     <div
@@ -105,8 +127,15 @@ export default function ProjectFilterPage({
               )}
             </ul>
           )}
-          <button className={`btn btn-neutral mt-8 w-full`}>
-            Apply Filters
+          <button
+            className={`btn btn-neutral mt-8 w-full`}
+            onClick={() => {
+              setSelectedTags([]);
+              setCurrentTag("");
+              router.replace("/projects");
+            }}
+          >
+            Clear Filters
           </button>
         </div>
         <hr className={`mb-4 border-base-content/10`} />
@@ -146,7 +175,7 @@ export default function ProjectFilterPage({
         <div
           className={`grid grid-cols-1 gap-8 md:grid-cols-2  lg:grid-cols-3`}
         >
-          {projects.fetchStatus === "fetching" ? (
+          {projects.data === undefined ? (
             <p className={`col-span-3 mt-36 text-center text-base-content/70`}>
               Loading...
             </p>
@@ -169,10 +198,29 @@ export default function ProjectFilterPage({
                           searchedTags={selectedTags}
                           likes={project.likes ?? 0}
                           isSignedIn={isSignedIn}
+                          selectedTags={selectedTags}
                         />
                       ),
                   )}
+              {githubSearchedProjects.data &&
+                githubSearchedProjects.data.map((project, index) => (
+                  <ProjectTile
+                    id={undefined}
+                    searchedQuery={search}
+                    key={index}
+                    title={project.name}
+                    description={project.description ?? ""}
+                    tags={[]}
+                    searchedTags={selectedTags}
+                    likes={project.stargazers_count ?? 0}
+                    image={""}
+                    isSignedIn={isSignedIn}
+                    isGithubProject={true}
+                    repoUrl={project.html_url}
+                  />
+                ))}
               {showGithubProjects &&
+                !search &&
                 githubTrendingProjects.data &&
                 githubTrendingProjects.data.map((project, index) => (
                   <ProjectTile
@@ -193,29 +241,19 @@ export default function ProjectFilterPage({
             </>
           )}
         </div>
-        {projects.isFetched &&
-        projects.data?.filter((project) =>
-          filter(selectedTags, search, project),
-        ).length === 0 ? (
+        {projects.data &&
+        projects.data.filter((project) => filter(selectedTags, search, project))
+          .length === 0 &&
+        !githubSearchedProjects.data ? (
           <p
-            className={`flex min-h-[60dvh] items-center justify-center font-bold text-base-content/70`}
+            className={`flex min-h-[60dvh] items-center justify-center text-base-content/70`}
           >
-            No projects found matching your search...
+            Loading projects from other sources...
           </p>
         ) : (
           <></>
         )}
       </div>
-      {/*<div*/}
-      {/*  className={`absolute bottom-4 flex w-[90vw] items-center justify-center`}*/}
-      {/*>*/}
-      {/*  <div className="join border border-base-content/10">*/}
-      {/*    <button className="btn join-item btn-active">1</button>*/}
-      {/*    <button className="btn join-item">2</button>*/}
-      {/*    <button className="btn join-item">3</button>*/}
-      {/*    <button className="btn join-item">4</button>*/}
-      {/*  </div>*/}
-      {/*</div>*/}
     </div>
   );
 }

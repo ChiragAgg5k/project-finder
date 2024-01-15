@@ -34,9 +34,13 @@ export default async function ProjectPage({
         {project.tags && project.tags.length > 0 && (
           <div className={`mb-8 flex items-center justify-center`}>
             {project.tags.split(",").map((tag, index) => (
-              <span key={index} className={`badge`}>
+              <Link
+                href={`/projects?tags=${tag}`}
+                key={index}
+                className={`badge hover:badge-outline`}
+              >
                 {tag}
-              </span>
+              </Link>
             ))}
           </div>
         )}

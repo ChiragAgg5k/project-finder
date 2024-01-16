@@ -7,16 +7,25 @@ import ProjectTile from "@/components/project-tile";
 import React, { useEffect, useState } from "react";
 import { api } from "@/trpc/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
-const filter = (selectedTags: string[], search: string, project: any, type?: string) => {
+const filter = (
+  selectedTags: string[],
+  search: string,
+  project: any,
+  type?: string,
+) => {
   return (
     (selectedTags.length === 0 ||
       project.tags
         ?.split(",")
         .some((tag: any) => selectedTags.includes(tag))) &&
     (project.name.toLowerCase().includes(search.toLowerCase()) ||
-      project.description?.toLowerCase().includes(search.toLowerCase()))
-      && (type === undefined || type === "" || type === "other" || project.type === type)
+      project.description?.toLowerCase().includes(search.toLowerCase())) &&
+    (type === undefined ||
+      type === "" ||
+      type === "other" ||
+      project.type === type)
   );
 };
 
@@ -78,10 +87,6 @@ export default function ProjectFilterPage({
             />
             Filter Projects
           </h3>
-          {/*<div className={`mb-4 flex items-center justify-center`}>*/}
-          {/*  <input type={`checkbox`} className={`checkbox mr-2`} />*/}
-          {/*  <p className={`text-sm `}>As per my preferences</p>*/}
-          {/*</div>*/}
 
           <hr className={`mb-4 border-base-content/10`} />
 
@@ -145,7 +150,7 @@ export default function ProjectFilterPage({
             onClick={() => {
               setSelectedTags([]);
               setCurrentTag("");
-                setProjectType("");
+              setProjectType("");
               router.replace("/projects");
             }}
           >
@@ -173,6 +178,10 @@ export default function ProjectFilterPage({
             Trending Github Projects
           </button>
         )}
+
+        <Link href={`/projects/create`} className={`btn btn-accent w-full mt-6 btn-outline`}>
+          Upload Project
+        </Link>
       </div>
       <div className={`w-full`}>
         <div className={`w-full`}>
@@ -197,7 +206,9 @@ export default function ProjectFilterPage({
             <>
               {!showGithubProjects &&
                 projects.data
-                  ?.filter((project) => filter(selectedTags, search, project, projectType))
+                  ?.filter((project) =>
+                    filter(selectedTags, search, project, projectType),
+                  )
                   .map(
                     (project, index) =>
                       project && (

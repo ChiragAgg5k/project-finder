@@ -1,28 +1,66 @@
-# Create T3 App
+[![Thumbnail](assets/thumbnail.png)](https://project-finderr.vercel.app/)
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+<h1 
+align="center"
+>
+    Project Finder
+</h1>
 
-## What's next? How do I make an app with this?
+A Project Finder application is essential to address the growing demand for streamlined collaboration and project
+discovery in various domains. With an increasing number of individuals and organizations seeking opportunities to
+collaborate on diverse projects, there is a need for a centralized platform.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## How to run the project
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+1. Clone this repo
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+```bash
+git clone https://github.com/ChiragAgg5k/project-finder.git
+cd project-finder
+```
 
-## Learn More
+2. Install dependencies using `npm` or `pnpm`
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+```bash
+npm install
+pnpm install # recommended
+```
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+3. Create a `.env` file in the root directory and add the following environment variables
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+- `DATABASE_URL` - The URL of the database to connect to
+- `NEXTAUTH_SECRET` - A secret string used to encrypt session data
+- `NEXTAUTH_URL` - The URL of the application
+- `GOOGLE_CLIENT_ID` - The client ID of the Google OAuth app
+- `GOOGLE_CLIENT_SECRET` - The client secret of the Google OAuth app
+- `UPLOADTHING_SECRET` - The secret key of the UploadThing API
+- `UPLOADTHING_APP_ID` - The app ID of the UploadThing API
+- `GITHUB_ACCESS_TOKEN` - The access token of the GitHub API
 
-## How do I deploy this?
+4. Run the development server
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+```bash
+npm run dev # or
+pnpm dev
+```
+
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Drizzle ORM](https://drizzle-orm.github.io/)
+- [UploadThing](https://uploadthingy.com/)
+- [GitHub API](https://docs.github.com/en/rest)
+- [Google OAuth](https://developers.google.com/identity/protocols/oauth2)
+- [NextAuth.js](https://next-auth.js.org/)
+- [Vercel](https://vercel.com/)
+- [PlanetScale](https://planetscale.com/)
+
+## About the project
+
+This project was made for the Bennett University Industry Hackathon 2024. Following are the team members:
+
+- Chirag Aggarwal - E22CSEU0325
+- Ankit Raj - EE2CSEU0321

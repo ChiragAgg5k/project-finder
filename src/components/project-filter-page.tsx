@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { api } from "@/trpc/react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const filter = (selectedTags: string[], search: string, project: any) => {
+const filter = (selectedTags: string[], search: string, project: any, type?: string) => {
   return (
     (selectedTags.length === 0 ||
       project.tags
@@ -16,6 +16,7 @@ const filter = (selectedTags: string[], search: string, project: any) => {
         .some((tag: any) => selectedTags.includes(tag))) &&
     (project.name.toLowerCase().includes(search.toLowerCase()) ||
       project.description?.toLowerCase().includes(search.toLowerCase()))
+      && (type === undefined || type === "" || type === "other" || project.type === type)
   );
 };
 
@@ -32,7 +33,9 @@ export default function ProjectFilterPage({
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("search");
   const searchTags = searchParams.get("tags");
+  const searchType = searchParams.get("type");
 
+  const [projectType, setProjectType] = useState<string | undefined>("");
   const [showGithubProjects, setShowGithubProjects] = useState(false);
   const [currentTag, setCurrentTag] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -52,6 +55,12 @@ export default function ProjectFilterPage({
   }, [searchTags]);
 
   useEffect(() => {
+    if (searchType) {
+      setProjectType(searchType);
+    }
+  }, [searchType]);
+
+  useEffect(() => {
     if (searchQuery) {
       setSearch(searchQuery);
     }
@@ -69,10 +78,10 @@ export default function ProjectFilterPage({
             />
             Filter Projects
           </h3>
-          <div className={`mb-4 flex items-center justify-center`}>
-            <input type={`checkbox`} className={`checkbox mr-2`} />
-            <p className={`text-sm `}>As per my preferences</p>
-          </div>
+          {/*<div className={`mb-4 flex items-center justify-center`}>*/}
+          {/*  <input type={`checkbox`} className={`checkbox mr-2`} />*/}
+          {/*  <p className={`text-sm `}>As per my preferences</p>*/}
+          {/*</div>*/}
 
           <hr className={`mb-4 border-base-content/10`} />
 
@@ -80,6 +89,10 @@ export default function ProjectFilterPage({
           <select
             className={`select select-bordered select-sm mb-4 w-full text-sm`}
             defaultValue={""}
+            value={projectType}
+            onChange={(e) => {
+              setProjectType(e.target.value);
+            }}
           >
             <option disabled={true} value="">
               Select project type
@@ -132,6 +145,7 @@ export default function ProjectFilterPage({
             onClick={() => {
               setSelectedTags([]);
               setCurrentTag("");
+                setProjectType("");
               router.replace("/projects");
             }}
           >
@@ -183,7 +197,7 @@ export default function ProjectFilterPage({
             <>
               {!showGithubProjects &&
                 projects.data
-                  ?.filter((project) => filter(selectedTags, search, project))
+                  ?.filter((project) => filter(selectedTags, search, project, projectType))
                   .map(
                     (project, index) =>
                       project && (
@@ -191,6 +205,7 @@ export default function ProjectFilterPage({
                           id={project.id}
                           searchedQuery={search}
                           key={index}
+                          type={project.type ?? undefined}
                           title={project.name}
                           description={project.description ?? ""}
                           image={project.image ?? ""}

@@ -16,6 +16,7 @@ export default function ProjectTile({
   isSignedIn,
   isGithubProject,
   repoUrl,
+    type,
 }: {
   id: string | undefined;
   title: string;
@@ -29,6 +30,7 @@ export default function ProjectTile({
   isGithubProject?: boolean;
   repoUrl?: string;
   selectedTags?: string[];
+  type ?: string | undefined;
 }) {
   return (
     <div
@@ -87,6 +89,14 @@ export default function ProjectTile({
                     </Link>
                   </li>
                 ),
+            )}
+            {type !== undefined && (
+                <Link
+                    href={`/projects?type=${type}`}
+                    className={`badge badge-primary badge-outline ml-2 mt-2`}
+                >
+                  {type}
+                </Link>
             )}
           </ul>
         )}

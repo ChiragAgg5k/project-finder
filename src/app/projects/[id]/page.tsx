@@ -33,15 +33,25 @@ export default async function ProjectPage({
         </h1>
         {project.tags && project.tags.length > 0 && (
           <div className={`mb-8 flex items-center justify-center`}>
-            {project.tags.split(",").map((tag, index) => (
-              <Link
-                href={`/projects?tags=${tag}`}
-                key={index}
-                className={`badge hover:badge-outline`}
-              >
-                {tag}
-              </Link>
-            ))}
+            <>
+              {project.tags.split(",").map((tag, index) => (
+                <Link
+                  href={`/projects?tags=${tag}`}
+                  key={index}
+                  className={`badge hover:badge-outline`}
+                >
+                  {tag}
+                </Link>
+              ))}
+              {project.type !== undefined && (
+                <Link
+                  href={`/projects?type=${project.type}`}
+                  className={`badge badge-primary badge-outline ml-2`}
+                >
+                  {project.type}
+                </Link>
+              )}
+            </>
           </div>
         )}
         <p

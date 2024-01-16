@@ -22,7 +22,7 @@ export const metadata = {
   title: "Project Finder",
   description:
     "Unlock Your Coding Potential: Explore, Connect, and Contribute with Project Finder – Where Tech Dreams Find Their Code.",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [{ rel: "icon", url: "/logo.png" }],
 };
 
 export default function RootLayout({

@@ -17,12 +17,12 @@ export default async function Home() {
         <div
           className={`pointer-events-none z-50 flex flex-col items-center justify-center md:flex-row`}
         >
-          <div className="ml-6 flex flex-col items-center justify-center pb-20 pt-16">
-            <h1 className="text-5xl font-bold text-white">
+          <div className="flex flex-col items-center justify-center pb-20 pt-16">
+            <h1 className="ml-6 text-5xl font-bold text-white">
               Tech Project Discovery for
               <span className={`ml-2 text-accent`}>Passionate Innovators</span>.
             </h1>
-            <p className="py-6">
+            <p className="ml-6 py-6">
               Unlock Your Coding Potential: Explore, Connect, and Contribute
               with Project Finder – Where Tech Dreams Find Their Code.
             </p>
@@ -52,6 +52,7 @@ export default async function Home() {
                 src={`/people.jpg`}
                 alt={``}
                 fill
+                priority={true}
                 placeholder={`blur`}
                 blurDataURL={`/people.jpg`}
                 className={`rounded-3xl object-cover`}

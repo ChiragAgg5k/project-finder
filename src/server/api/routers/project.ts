@@ -59,7 +59,7 @@ export const projectRouter = createTRPCRouter({
     return ctx.db.query.projects.findMany();
   }),
 
-  fetchGithubTrending: publicProcedure.query(async ({ ctx }) => {
+  fetchGithubTrending: publicProcedure.query(async () => {
     const date = new Date();
     date.setDate(date.getDate() - 30);
     const year = date.getFullYear();
@@ -82,7 +82,7 @@ export const projectRouter = createTRPCRouter({
         query: z.string(),
       }),
     )
-    .query(async ({ ctx, input }) => {
+    .query(async ({  input }) => {
       if (input.query === "") return;
 
       const result = await octokit.request("GET /search/repositories", {

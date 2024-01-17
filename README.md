@@ -14,35 +14,35 @@ collaborate on diverse projects, there is a need for a centralized platform.
 
 1. Clone this repo
 
-```bash
-git clone https://github.com/ChiragAgg5k/project-finder.git
-cd project-finder
-```
+    ```bash
+    git clone https://github.com/ChiragAgg5k/project-finder.git
+    cd project-finder
+    ```
 
 2. Install dependencies using `npm` or `pnpm`
 
-```bash
-npm install
-pnpm install # recommended
-```
+    ```bash
+    npm install
+    pnpm install # recommended
+    ```
 
 3. Create a `.env` file in the root directory and add the following environment variables
 
-- `DATABASE_URL` - The URL of the database to connect to
-- `NEXTAUTH_SECRET` - A secret string used to encrypt session data
-- `NEXTAUTH_URL` - The URL of the application
-- `GOOGLE_CLIENT_ID` - The client ID of the Google OAuth app
-- `GOOGLE_CLIENT_SECRET` - The client secret of the Google OAuth app
-- `UPLOADTHING_SECRET` - The secret key of the UploadThing API
-- `UPLOADTHING_APP_ID` - The app ID of the UploadThing API
-- `GITHUB_ACCESS_TOKEN` - The access token of the GitHub API
+   - `DATABASE_URL` - The URL of the database to connect to
+   - `NEXTAUTH_SECRET` - A secret string used to encrypt session data
+   - `NEXTAUTH_URL` - The URL of the application
+   - `GOOGLE_CLIENT_ID` - The client ID of the Google OAuth app
+   - `GOOGLE_CLIENT_SECRET` - The client secret of the Google OAuth app
+   - `UPLOADTHING_SECRET` - The secret key of the UploadThing API
+   - `UPLOADTHING_APP_ID` - The app ID of the UploadThing API
+   - `GITHUB_ACCESS_TOKEN` - The access token of the GitHub API
 
 4. Run the development server
 
-```bash
-npm run dev # or
-pnpm dev
-```
+    ```bash
+    npm run dev # or
+    pnpm dev
+    ```
 
 5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

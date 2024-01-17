@@ -1,5 +1,4 @@
 import SignoutButton from "@/components/signout-button";
-import { api } from "@/trpc/server";
 import { getServerAuthSession } from "@/server/auth";
 import { redirect } from "next/navigation";
 

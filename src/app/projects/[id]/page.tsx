@@ -3,13 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
-
 const formatDate = (date: Date) => {
-    const d = new Date(date);
-    return `${d.toLocaleString("default", {
-        month: "short",
-    })} ${d.getDate()}, ${d.getFullYear()}`;
-}
+  const d = new Date(date);
+  return `${d.toLocaleString("default", {
+    month: "short",
+  })} ${d.getDate()}, ${d.getFullYear()}`;
+};
 
 export default async function ProjectPage({
   params,
@@ -38,11 +37,12 @@ export default async function ProjectPage({
 
   return (
     <div
-      className={`mt-20 relative flex min-h-[91dvh] flex-col-reverse items-center justify-center bg-base-200 p-8 md:flex-row`}
+      className={`relative mt-20 flex min-h-[91dvh] flex-col-reverse items-center justify-center bg-base-200 p-8 md:flex-row`}
     >
       <Link
-          href={`/projects`}
-          className={`btn btn-neutral absolute top-4 left-4`}>
+        href={`/projects`}
+        className={`btn btn-neutral absolute left-4 top-4`}
+      >
         <IoMdArrowRoundBack className={`text-xl`} />
         Back
       </Link>
@@ -98,9 +98,10 @@ export default async function ProjectPage({
           {project.description}
 
           <span
-          className={`block mt-4 text-sm text-base-content/60 text-right`}
+            className={`mt-4 block text-right text-sm text-base-content/60`}
           >
-            - {project.createdAt ? formatDate(project.createdAt) : "Unknown Date"}
+            -{" "}
+            {project.createdAt ? formatDate(project.createdAt) : "Unknown Date"}
           </span>
         </p>
         <div className={`flex items-center justify-center`}>

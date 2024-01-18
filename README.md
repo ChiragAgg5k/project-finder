@@ -14,17 +14,17 @@ collaborate on diverse projects, there is a need for a centralized platform.
 
 1. Clone this repo
 
-    ```bash
-    git clone https://github.com/ChiragAgg5k/project-finder.git
-    cd project-finder
-    ```
+   ```bash
+   git clone https://github.com/ChiragAgg5k/project-finder.git
+   cd project-finder
+   ```
 
 2. Install dependencies using `npm` or `pnpm`
 
-    ```bash
-    npm install
-    pnpm install # recommended
-    ```
+   ```bash
+   npm install
+   pnpm install # recommended
+   ```
 
 3. Create a `.env` file in the root directory and add the following environment variables
 
@@ -39,10 +39,10 @@ collaborate on diverse projects, there is a need for a centralized platform.
 
 4. Run the development server
 
-    ```bash
-    npm run dev # or
-    pnpm dev
-    ```
+   ```bash
+   npm run dev # or
+   pnpm dev
+   ```
 
 5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

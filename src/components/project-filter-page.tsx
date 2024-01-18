@@ -179,7 +179,10 @@ export default function ProjectFilterPage({
           </button>
         )}
 
-        <Link href={`/projects/create`} className={`btn btn-accent w-full mt-6 btn-outline`}>
+        <Link
+          href={`/projects/create`}
+          className={`btn btn-outline btn-accent mt-6 w-full`}
+        >
           Upload Project
         </Link>
       </div>

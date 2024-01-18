@@ -59,7 +59,7 @@ export const projectRouter = createTRPCRouter({
     return ctx.db.query.projects.findMany();
   }),
 
-    fetchUserProjects: publicProcedure
+  fetchUserProjects: publicProcedure
     .input(
       z.object({
         userId: z.string().uuid(),
@@ -94,7 +94,7 @@ export const projectRouter = createTRPCRouter({
         query: z.string(),
       }),
     )
-    .query(async ({  input }) => {
+    .query(async ({ input }) => {
       if (input.query === "") return;
 
       const result = await octokit.request("GET /search/repositories", {

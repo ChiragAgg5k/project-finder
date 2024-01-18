@@ -52,11 +52,9 @@ export default async function UsersPage({
               <h1 className={`mb-2 text-3xl font-bold`}>{user.name}</h1>
               <p className={`mb-4 text-base-content/70`}>{user.email}</p>
             </div>
-            {
-              session && session.user.id === user.id && (
-                  <SignoutButton className={`btn btn-neutral btn-wide`} />
-              )
-            }
+            {session && session.user.id === user.id && (
+              <SignoutButton className={`btn btn-neutral btn-wide`} />
+            )}
           </div>
         </div>
         <div className={`w-full border-l border-base-content/25 p-8`}>
@@ -67,6 +65,7 @@ export default async function UsersPage({
             <div className={`grid grid-cols-3 gap-8`}>
               {projects.map((project) => (
                 <ProjectTile
+                  key={project.id}
                   id={project.id}
                   title={project.name}
                   description={project.description ?? ""}

@@ -79,8 +79,10 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
           />
         </div>
       ) : (
-        <div className={`mb-8 text-center flex flex-col sm:flex-row items-center justify-center`}>
-          <button className={`btn btn-neutral btn-sm mr-2 mb-2 sm:mb-0`}>
+        <div
+          className={`mb-8 flex flex-col items-center justify-center text-center sm:flex-row`}
+        >
+          <button className={`btn btn-neutral btn-sm mb-2 mr-2 sm:mb-0`}>
             <FaGithub className={`text-xl`} />
             Connect GitHub Account
           </button>
@@ -91,9 +93,9 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
       )}
       <hr className={`border-accent py-4`} />
       <form className={`space-y-6`} onSubmit={handleSubmit}>
-        <div className={`flex flex-col sm:flex-row w-full`}>
+        <div className={`flex w-full flex-col sm:flex-row`}>
           <input
-            className={`input input-bordered mr-2 mb-4 sm:mb-0 w-full text-sm`}
+            className={`input input-bordered mb-4 mr-2 w-full text-sm sm:mb-0`}
             placeholder={`Project Name`}
             value={projectName}
             onChange={(e) => setProjectName(e.target.value)}
@@ -124,8 +126,8 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
           onChange={(e) => setProjectDescription(e.target.value)}
           rows={5}
         />
-        <div className={`flex flex-col sm:flex-row items-start`}>
-          <div className={`relative mr-2 w-full mb-4 sm:mb-0`}>
+        <div className={`flex flex-col items-start sm:flex-row`}>
+          <div className={`relative mb-4 mr-2 w-full sm:mb-0`}>
             <input
               className={`input input-bordered w-full text-sm`}
               placeholder={`Project URL`}

@@ -25,7 +25,7 @@ export default async function Navbar() {
             {session ? (
               <li>
                 <Link
-                  href={`/profile`}
+                  href={`/users/${session.user.id}`}
                   className={`btn btn-ghost btn-sm font-normal`}
                 >
                   Profile

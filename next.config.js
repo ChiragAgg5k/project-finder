@@ -16,6 +16,10 @@ const config = {
         protocol: "https",
         hostname: "socialify.git.ci",
       },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      }
     ],
   },
 };

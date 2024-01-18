@@ -59,6 +59,18 @@ export const projectRouter = createTRPCRouter({
     return ctx.db.query.projects.findMany();
   }),
 
+    fetchUserProjects: publicProcedure
+    .input(
+      z.object({
+        userId: z.string().uuid(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      return ctx.db.query.projects.findMany({
+        where: eq(projects.ownerId, input.userId),
+      });
+    }),
+
   fetchGithubTrending: publicProcedure.query(async () => {
     const date = new Date();
     date.setDate(date.getDate() - 30);

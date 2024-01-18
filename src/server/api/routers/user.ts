@@ -11,11 +11,9 @@ export const userRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
-      return ctx.db
-        .select()
-        .from(users)
-        .where(eq(users.id, input.userId))
-        .limit(1);
+      return ctx.db.query.users.findFirst({
+        where: eq(users.id, input.userId),
+      });
     }),
 
   fetchLikedProjects: publicProcedure

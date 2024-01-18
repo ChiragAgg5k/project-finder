@@ -1,6 +1,15 @@
 import { api } from "@/trpc/server";
 import Image from "next/image";
 import Link from "next/link";
+import { IoMdArrowRoundBack } from "react-icons/io";
+
+
+const formatDate = (date: Date) => {
+    const d = new Date(date);
+    return `${d.toLocaleString("default", {
+        month: "short",
+    })} ${d.getDate()}, ${d.getFullYear()}`;
+}
 
 export default async function ProjectPage({
   params,
@@ -23,41 +32,76 @@ export default async function ProjectPage({
     );
   }
 
+  const user = await api.user.fetch.query({
+    userId: project.ownerId,
+  });
+
   return (
     <div
-      className={`mt-20 flex min-h-[91dvh] flex-col-reverse items-center justify-center bg-base-200 p-8 md:flex-row`}
+      className={`mt-20 relative flex min-h-[91dvh] flex-col-reverse items-center justify-center bg-base-200 p-8 md:flex-row`}
     >
+      <Link
+          href={`/projects`}
+          className={`btn btn-neutral absolute top-4 left-4`}>
+        <IoMdArrowRoundBack className={`text-xl`} />
+        Back
+      </Link>
       <div className={`w-full pr-8`}>
-        <h1 className={`mb-4 text-center text-3xl font-bold`}>
-          {project.name}
-        </h1>
-        {project.tags && project.tags.length > 0 && (
-          <div className={`mb-8 flex items-center justify-center`}>
-            <>
-              {project.tags.split(",").map((tag, index) => (
-                <Link
-                  href={`/projects?tags=${tag}`}
-                  key={index}
-                  className={`badge hover:badge-outline`}
-                >
-                  {tag}
-                </Link>
-              ))}
-              {project.type !== undefined && (
-                <Link
-                  href={`/projects?type=${project.type}`}
-                  className={`badge badge-primary badge-outline ml-2`}
-                >
-                  {project.type}
-                </Link>
-              )}
-            </>
+        <div className={`mb-8 flex w-full items-center justify-center`}>
+          <div>
+            <Link
+              href={user ? `/users/${user.id}` : "#"}
+              className={`tooltip tooltip-bottom`}
+              data-tip={user?.name ?? "User"}
+            >
+              <Image
+                src={user?.image ? user.image : "/default-pfp.jpg"}
+                alt={`user image`}
+                width={60}
+                height={60}
+                className={`mr-4 rounded-full`}
+              />
+            </Link>
           </div>
-        )}
+          <div className={`flex flex-col items-center justify-center`}>
+            <h1 className={`mb-4 text-center text-3xl font-bold`}>
+              {project.name}
+            </h1>
+            {project.tags && project.tags.length > 0 && (
+              <div className={`flex items-center justify-center`}>
+                <>
+                  {project.tags.split(",").map((tag, index) => (
+                    <Link
+                      href={`/projects?tags=${tag}`}
+                      key={index}
+                      className={`badge hover:badge-outline`}
+                    >
+                      {tag}
+                    </Link>
+                  ))}
+                  {project.type !== undefined && (
+                    <Link
+                      href={`/projects?type=${project.type}`}
+                      className={`badge badge-primary badge-outline ml-2`}
+                    >
+                      {project.type}
+                    </Link>
+                  )}
+                </>
+              </div>
+            )}
+          </div>
+        </div>
         <p
           className={`mb-8 rounded-2xl bg-base-300 p-6 text-center text-base-content/80`}
         >
           {project.description}
+
+          <span
+          className={`block mt-4 text-sm text-base-content/60 text-right`}
+          >
+            - {project.createdAt ? formatDate(project.createdAt) : "Unknown Date"}
+          </span>
         </p>
         <div className={`flex items-center justify-center`}>
           <Link

@@ -54,7 +54,7 @@ export default async function UsersPage({
             </div>
             {
               session && session.user.id === user.id && (
-                  <SignoutButton />
+                  <SignoutButton className={`btn btn-neutral btn-wide`} />
               )
             }
           </div>

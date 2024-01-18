@@ -9,7 +9,7 @@ export default async function Navbar() {
       <div className="navbar rounded-xl bg-base-100">
         <div className="flex-1">
           <Link href={`/`} className="btn btn-ghost text-xl">
-            Project Finder
+            <span className={`text-accent`}>Project</span> Finder
           </Link>
         </div>
         <div className="flex-none">

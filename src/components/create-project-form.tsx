@@ -79,7 +79,7 @@ export default function CreateProjectForm({ userId }: { userId: string }) {
           />
         </div>
       ) : (
-        <div className={`mb-8 flex flex-col sm:flex-row items-center justify-center`}>
+        <div className={`mb-8 text-center flex flex-col sm:flex-row items-center justify-center`}>
           <button className={`btn btn-neutral btn-sm mr-2 mb-2 sm:mb-0`}>
             <FaGithub className={`text-xl`} />
             Connect GitHub Account

@@ -54,7 +54,7 @@ export default function Comments({
       </form>
       {comments.data && comments.data.length > 0 ? (
         comments.data.map((comment) => (
-            <div className={`p-4 flex items-center`}>
+            <div className={`p-4 flex items-center`} key={comment.id}>
               <Link href={`/users/${comment.user.id}`}>
               <Image
                 src={comment.user.image ? comment.user.image : "/default-pfp.jpg"}

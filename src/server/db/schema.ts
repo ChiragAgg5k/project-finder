@@ -1,14 +1,6 @@
-import { relations, sql } from "drizzle-orm";
-import {
-  index,
-  int,
-  mysqlTableCreator,
-  primaryKey,
-  text,
-  timestamp,
-  varchar,
-} from "drizzle-orm/mysql-core";
-import { type AdapterAccount } from "next-auth/adapters";
+import {relations, sql} from "drizzle-orm";
+import {index, int, mysqlTableCreator, primaryKey, text, timestamp, varchar,} from "drizzle-orm/mysql-core";
+import {type AdapterAccount} from "next-auth/adapters";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -113,3 +105,29 @@ export const projects = mysqlTable(
     ownerIdIdx: index("ownerId_idx").on(project.ownerId),
   }),
 );
+
+export const comments = mysqlTable(
+  "comment",
+  {
+    id: varchar("id", { length: 255 }).notNull().primaryKey(),
+    content: text("content"),
+    projectId: varchar("projectId", { length: 255 }).notNull(),
+    userId: varchar("userId", { length: 255 }).notNull(),
+    createdAt: timestamp("createdAt", {
+      mode: "date",
+      fsp: 3,
+    }).default(sql`CURRENT_TIMESTAMP(3)`),
+  },
+  (comment) => ({
+    projectIdIdx: index("projectId_idx").on(comment.projectId),
+    userIdIdx: index("userId_idx").on(comment.userId),
+  }),
+);
+export const projectsRelations = relations(projects, ({ many }) => ({
+  comments: many(comments),
+}));
+
+export const commentsRelations = relations(comments, ({ one }) => ({
+    project: one(projects, { fields: [comments.projectId], references: [projects.id] }),
+    user: one(users, { fields: [comments.userId], references: [users.id] }),
+}));

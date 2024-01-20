@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import BackgroundCellCore from "@/components/background-cells";
 import { IoCloudUploadOutline } from "react-icons/io5";
+import StaggeredText from "@/components/staggered-text";
 
 export default async function Home() {
   const session = await getServerAuthSession();
@@ -22,10 +23,13 @@ export default async function Home() {
               Tech Project Discovery for
               <span className={`ml-2 text-accent`}>Passionate Innovators</span>.
             </h1>
-            <p className="ml-6 py-6">
-              Unlock Your Coding Potential: Explore, Connect, and Contribute
-              with Project Finder – Where Tech Dreams Find Their Code.
-            </p>
+            <StaggeredText
+                className={`ml-6 py-6`}
+                fontSize={`1rem`}
+              text={
+                "Unlock Your Coding Potential: Explore, Connect, and Contribute with Project Finder – Where Tech Dreams Find Their Code."
+              }
+            />
             <div className={`flex flex-col sm:flex-row`}>
               {session ? (
                 <Link

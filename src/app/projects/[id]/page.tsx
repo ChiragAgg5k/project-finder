@@ -2,6 +2,8 @@ import { api } from "@/trpc/server";
 import Image from "next/image";
 import Link from "next/link";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import Comments from "@/app/projects/[id]/comments";
+import {getServerAuthSession} from "@/server/auth";
 
 const formatDate = (date: Date) => {
   const d = new Date(date);
@@ -20,6 +22,7 @@ export default async function ProjectPage({
   const project = await api.project.fetch.query({
     id: params.id,
   });
+  const session = await getServerAuthSession();
 
   if (!project) {
     return (
@@ -37,91 +40,95 @@ export default async function ProjectPage({
 
   return (
     <div
-      className={`relative mt-20 flex min-h-[91dvh] flex-col-reverse items-center justify-center bg-base-200 p-8 md:flex-row`}
+      className={`relative mt-20 flex min-h-[90dvh] flex-col justify-center bg-base-200 p-8`}
     >
-      <Link
-        href={`/projects`}
-        className={`btn btn-neutral absolute left-4 top-4`}
-      >
-        <IoMdArrowRoundBack className={`text-xl`} />
-        Back
-      </Link>
-      <div className={`w-full pr-8`}>
-        <div className={`mb-8 flex w-full items-center justify-center`}>
-          <div>
-            <Link
-              href={user ? `/users/${user.id}` : "#"}
-              className={`tooltip tooltip-bottom`}
-              data-tip={user?.name ?? "User"}
+      <div className={`flex w-full flex-col-reverse mt-12 md:flex-row`}>
+        <Link
+          href={`/projects`}
+          className={`btn btn-neutral absolute left-4 top-4`}
+        >
+          <IoMdArrowRoundBack className={`text-xl`} />
+        </Link>
+        <div className={`w-full pr-8`}>
+          <div className={`mb-8 flex w-full items-center justify-center`}>
+            <div>
+              <Link
+                href={user ? `/users/${user.id}` : "#"}
+                className={`tooltip tooltip-bottom`}
+                data-tip={user?.name ?? "User"}
+              >
+                <Image
+                  src={user?.image ? user.image : "/default-pfp.jpg"}
+                  alt={`user image`}
+                  width={60}
+                  height={60}
+                  className={`mr-4 rounded-full`}
+                />
+              </Link>
+            </div>
+            <div className={`flex flex-col items-center justify-center`}>
+              <h1 className={`mb-4 text-center text-3xl font-bold`}>
+                {project.name}
+              </h1>
+              {project.tags && project.tags.length > 0 && (
+                <div className={`flex items-center justify-center`}>
+                  <>
+                    {project.tags.split(",").map((tag, index) => (
+                      <Link
+                        href={`/projects?tags=${tag}`}
+                        key={index}
+                        className={`badge hover:badge-outline`}
+                      >
+                        {tag}
+                      </Link>
+                    ))}
+                    {project.type !== undefined && (
+                      <Link
+                        href={`/projects?type=${project.type}`}
+                        className={`badge badge-primary badge-outline ml-2`}
+                      >
+                        {project.type}
+                      </Link>
+                    )}
+                  </>
+                </div>
+              )}
+            </div>
+          </div>
+          <p
+            className={`mb-8 rounded-2xl bg-base-300 p-6 text-center text-base-content/80`}
+          >
+            {project.description}
+
+            <span
+              className={`mt-4 block text-right text-sm text-base-content/60`}
             >
-              <Image
-                src={user?.image ? user.image : "/default-pfp.jpg"}
-                alt={`user image`}
-                width={60}
-                height={60}
-                className={`mr-4 rounded-full`}
-              />
+              -{" "}
+              {project.createdAt
+                ? formatDate(project.createdAt)
+                : "Unknown Date"}
+            </span>
+          </p>
+          <div className={`flex items-center justify-center`}>
+            <Link
+              href={project.projectUrl ?? ""}
+              className={`btn btn-outline btn-accent btn-wide`}
+            >
+              View Project
             </Link>
           </div>
-          <div className={`flex flex-col items-center justify-center`}>
-            <h1 className={`mb-4 text-center text-3xl font-bold`}>
-              {project.name}
-            </h1>
-            {project.tags && project.tags.length > 0 && (
-              <div className={`flex items-center justify-center`}>
-                <>
-                  {project.tags.split(",").map((tag, index) => (
-                    <Link
-                      href={`/projects?tags=${tag}`}
-                      key={index}
-                      className={`badge hover:badge-outline`}
-                    >
-                      {tag}
-                    </Link>
-                  ))}
-                  {project.type !== undefined && (
-                    <Link
-                      href={`/projects?type=${project.type}`}
-                      className={`badge badge-primary badge-outline ml-2`}
-                    >
-                      {project.type}
-                    </Link>
-                  )}
-                </>
-              </div>
-            )}
-          </div>
         </div>
-        <p
-          className={`mb-8 rounded-2xl bg-base-300 p-6 text-center text-base-content/80`}
-        >
-          {project.description}
-
-          <span
-            className={`mt-4 block text-right text-sm text-base-content/60`}
-          >
-            -{" "}
-            {project.createdAt ? formatDate(project.createdAt) : "Unknown Date"}
-          </span>
-        </p>
-        <div className={`flex items-center justify-center`}>
-          <Link
-            href={project.projectUrl ?? ""}
-            className={`btn btn-outline btn-accent btn-wide`}
-          >
-            View Project
-          </Link>
-        </div>
+        {project.image && (
+          <Image
+            src={project.image}
+            alt={`project image`}
+            width={400}
+            height={400}
+            className={`mb-16 h-[40dvh] max-w-[40dvw] w-auto rounded-xl object-cover`}
+          />
+        )}
       </div>
-      {project.image && (
-        <Image
-          src={project.image}
-          alt={`project image`}
-          width={400}
-          height={400}
-          className={`mb-16 h-[40dvh] w-auto rounded-xl object-cover`}
-        />
-      )}
+      <Comments projectId={params.id} isSignedIn={session !== null} />
     </div>
   );
 }

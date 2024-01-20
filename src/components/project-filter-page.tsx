@@ -247,7 +247,6 @@ export default function ProjectFilterPage({
                       project && (
                         <ProjectTile
                           id={project.id}
-                          userId={userId}
                           searchedQuery={search}
                           key={index}
                           type={project.type ?? undefined}
@@ -256,7 +255,6 @@ export default function ProjectFilterPage({
                           image={project.image ?? ""}
                           tags={project.tags?.split(",") ?? []}
                           searchedTags={selectedTags}
-                          likes={project.likes ?? 0}
                           isSignedIn={isSignedIn}
                           selectedTags={selectedTags}
                         />
@@ -266,14 +264,12 @@ export default function ProjectFilterPage({
                 githubSearchedProjects.data.map((project, index) => (
                   <ProjectTile
                     id={undefined}
-                    userId={userId}
                     searchedQuery={search}
                     key={index}
                     title={project.name}
                     description={project.description ?? ""}
                     tags={[]}
                     searchedTags={selectedTags}
-                    likes={project.stargazers_count ?? 0}
                     image={""}
                     isSignedIn={isSignedIn}
                     isGithubProject={true}
@@ -286,14 +282,12 @@ export default function ProjectFilterPage({
                 githubTrendingProjects.data.map((project, index) => (
                   <ProjectTile
                     id={undefined}
-                    userId={userId}
                     searchedQuery={search}
                     key={index}
                     title={project.name}
                     description={project.description ?? ""}
                     tags={[]}
                     searchedTags={selectedTags}
-                    likes={project.stargazers_count ?? 0}
                     image={""}
                     isSignedIn={isSignedIn}
                     isGithubProject={true}
@@ -304,7 +298,9 @@ export default function ProjectFilterPage({
           )}
         </div>
 
-        {tab === "chatbot" && <Chat userId={userId} projects={projects} isSignedIn={isSignedIn} />}
+        {tab === "chatbot" && (
+          <Chat userId={userId} projects={projects} isSignedIn={isSignedIn} />
+        )}
 
         {projects.data &&
         projects.data.filter((project) => filter(selectedTags, search, project))

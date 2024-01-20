@@ -1,8 +1,4 @@
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "@/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { z } from "zod";
 import { projects } from "@/server/db/schema";
 import { v4 } from "uuid";
@@ -56,7 +52,11 @@ export const projectRouter = createTRPCRouter({
     }),
 
   fetchAll: publicProcedure.query(async ({ ctx }) => {
-    return ctx.db.query.projects.findMany();
+    return ctx.db.query.projects.findMany({
+      with: {
+        likes: true,
+      },
+    });
   }),
 
   fetchUserProjects: publicProcedure
@@ -105,21 +105,5 @@ export const projectRouter = createTRPCRouter({
       });
 
       return result.data.items;
-    }),
-
-  incrementLikes: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        currentLikes: z.number(),
-      }),
-    )
-    .mutation(async ({ ctx, input }) => {
-      return ctx.db
-        .update(projects)
-        .set({
-          likes: input.currentLikes + 1,
-        })
-        .where(eq(projects.id, input.id));
     }),
 });

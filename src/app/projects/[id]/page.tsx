@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import Comments from "@/app/projects/[id]/comments";
-import {getServerAuthSession} from "@/server/auth";
+import { getServerAuthSession } from "@/server/auth";
 
 const formatDate = (date: Date) => {
   const d = new Date(date);
@@ -42,7 +42,7 @@ export default async function ProjectPage({
     <div
       className={`relative mt-20 flex min-h-[90dvh] flex-col justify-center bg-base-200 p-8`}
     >
-      <div className={`flex w-full flex-col-reverse mt-12 md:flex-row`}>
+      <div className={`mt-12 flex w-full flex-col-reverse md:flex-row`}>
         <Link
           href={`/projects`}
           className={`btn btn-neutral absolute left-4 top-4`}
@@ -124,7 +124,7 @@ export default async function ProjectPage({
             alt={`project image`}
             width={400}
             height={400}
-            className={`mb-16 h-[40dvh] md:max-w-[40dvw] w-auto rounded-xl object-cover`}
+            className={`mb-16 h-[40dvh] w-auto rounded-xl object-cover md:max-w-[40dvw]`}
           />
         )}
       </div>

@@ -1,24 +1,32 @@
 "use client";
 
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect } from "react";
 import { api } from "@/trpc/react";
 
 export default function LikeButton({
-  likes,
   isSignedIn,
   projectId,
-  userId,
 }: {
-  likes: number;
   isSignedIn: boolean;
   projectId: string | undefined;
-  userId: string;
 }) {
-  const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(likes);
+  const likes = api.likes.likes.useQuery({
+    projectId: projectId,
+  });
+  const liked = api.likes.liked.useQuery({
+    projectId: projectId,
+  });
 
-  const incrementLike = api.project.incrementLikes.useMutation();
+  const createLike = api.likes.create.useMutation();
+  const deleteLike = api.likes.delete.useMutation();
+
+  useEffect(() => {
+    if (createLike.isSuccess || deleteLike.isSuccess) {
+      void likes.refetch();
+      void liked.refetch();
+    }
+  }, [createLike.isSuccess, deleteLike.isSuccess]);
 
   return (
     <>
@@ -26,25 +34,27 @@ export default function LikeButton({
         className={`btn btn-ghost btn-sm absolute bottom-4 right-4 z-50`}
         disabled={!isSignedIn}
         onClick={() => {
-          setLiked(!liked);
-          setLikeCount(likeCount + (liked ? -1 : 1));
-
           if (!projectId) return;
 
-          if (!liked) {
-            incrementLike.mutate({
-              id: projectId,
-              currentLikes: likeCount,
+          if (!liked.data) {
+            createLike.mutate({
+              projectId: projectId,
+            });
+          } else {
+            deleteLike.mutate({
+              projectId: projectId,
             });
           }
         }}
       >
-        {liked ? (
+        {liked.data ? (
           <AiFillLike className={`text-xl`} />
         ) : (
           <AiOutlineLike className={`text-xl`} />
         )}
-        {likeCount > 0 ? <span>{likeCount}</span> : <></>}
+        {likes.data && likes.data.length > 0 && (
+          <span>{likes.data.length}</span>
+        )}
       </button>
     </>
   );

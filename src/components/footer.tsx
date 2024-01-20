@@ -1,6 +1,6 @@
-import {FaGithub, FaLinkedin, FaTwitter} from "react-icons/fa";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 import Link from "next/link";
-import {FaXTwitter} from "react-icons/fa6";
+import { FaXTwitter } from "react-icons/fa6";
 
 export default function Footer() {
   return (
@@ -16,14 +16,20 @@ export default function Footer() {
         <header className="footer-title">Social</header>
         <div className="grid grid-flow-col gap-4">
           <Link href={`https://github.com/ChiragAgg5k`}>
-            <FaGithub className={`text-3xl hover:text-base-content transition-all ease-in-out`}  />
+            <FaGithub
+              className={`text-3xl transition-all ease-in-out hover:text-base-content`}
+            />
           </Link>
-            <Link href={`https://www.linkedin.com/in/chiragagg5k/`}>
-                <FaLinkedin className={`text-3xl hover:text-base-content transition-all ease-in-out`}  />
-            </Link>
-            <Link href={`https://twitter.com/ChiragAgg5k`}>
-                <FaXTwitter className={`text-3xl hover:text-base-content transition-all ease-in-out`}  />
-            </Link>
+          <Link href={`https://www.linkedin.com/in/chiragagg5k/`}>
+            <FaLinkedin
+              className={`text-3xl transition-all ease-in-out hover:text-base-content`}
+            />
+          </Link>
+          <Link href={`https://twitter.com/ChiragAgg5k`}>
+            <FaXTwitter
+              className={`text-3xl transition-all ease-in-out hover:text-base-content`}
+            />
+          </Link>
         </div>
       </nav>
     </footer>

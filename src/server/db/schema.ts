@@ -1,6 +1,14 @@
-import {relations, sql} from "drizzle-orm";
-import {index, int, mysqlTableCreator, primaryKey, text, timestamp, varchar,} from "drizzle-orm/mysql-core";
-import {type AdapterAccount} from "next-auth/adapters";
+import { relations, sql } from "drizzle-orm";
+import {
+  index,
+  int,
+  mysqlTableCreator,
+  primaryKey,
+  text,
+  timestamp,
+  varchar,
+} from "drizzle-orm/mysql-core";
+import { type AdapterAccount } from "next-auth/adapters";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -94,7 +102,6 @@ export const projects = mysqlTable(
     projectUrl: varchar("projectUrl", { length: 255 }),
     tags: text("tags"),
     type: varchar("type", { length: 255 }),
-    likes: int("likes").default(0),
     ownerId: varchar("ownerId", { length: 255 }).notNull(),
     createdAt: timestamp("createdAt", {
       mode: "date",
@@ -104,6 +111,19 @@ export const projects = mysqlTable(
   (project) => ({
     ownerIdIdx: index("ownerId_idx").on(project.ownerId),
   }),
+);
+
+export const likes = mysqlTable(
+  "likes",
+  {
+    projectId: varchar("projectId", { length: 255 }).notNull(),
+    userId: varchar("userId", { length: 255 }).notNull(),
+  },
+  (like) => {
+    return {
+      compoundKey: primaryKey(like.projectId, like.userId),
+    };
+  },
 );
 
 export const comments = mysqlTable(
@@ -123,11 +143,24 @@ export const comments = mysqlTable(
     userIdIdx: index("userId_idx").on(comment.userId),
   }),
 );
+
+export const likesRelations = relations(likes, ({ one }) => ({
+  project: one(projects, {
+    fields: [likes.projectId],
+    references: [projects.id],
+  }),
+  user: one(users, { fields: [likes.userId], references: [users.id] }),
+}));
+
 export const projectsRelations = relations(projects, ({ many }) => ({
   comments: many(comments),
+  likes: many(likes),
 }));
 
 export const commentsRelations = relations(comments, ({ one }) => ({
-    project: one(projects, { fields: [comments.projectId], references: [projects.id] }),
-    user: one(users, { fields: [comments.userId], references: [users.id] }),
+  project: one(projects, {
+    fields: [comments.projectId],
+    references: [projects.id],
+  }),
+  user: one(users, { fields: [comments.userId], references: [users.id] }),
 }));

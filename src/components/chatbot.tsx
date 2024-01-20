@@ -71,11 +71,18 @@ export default function Chat({
                   className={`rounded-full border border-accent  bg-base-100`}
                 />
                 <div className="chat-bubble">
-                  <Markdown className={`leading-6`} components={
-                    {
-                      a: ({node, ...props}) => <a {...props} className={`text-accent underline`}>{props.children}</a>
-                    }
-                  }>{m.content}</Markdown>
+                  <Markdown
+                    className={`leading-6`}
+                    components={{
+                      a: ({ node, ...props }) => (
+                        <a {...props} className={`text-accent underline`}>
+                          {props.children}
+                        </a>
+                      ),
+                    }}
+                  >
+                    {m.content}
+                  </Markdown>
                 </div>
               </div>
             )}

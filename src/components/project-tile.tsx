@@ -6,12 +6,10 @@ import { FaGithub } from "react-icons/fa";
 
 export default function ProjectTile({
   id,
-  userId,
   title,
   description,
   image,
   tags,
-  likes,
   searchedQuery,
   searchedTags,
   isSignedIn,
@@ -20,12 +18,10 @@ export default function ProjectTile({
   type,
 }: {
   id: string | undefined;
-  userId: string;
   title: string;
   description: string;
   image: string;
   tags: string[];
-  likes: number;
   searchedQuery: string;
   searchedTags: string[];
   isSignedIn: boolean;
@@ -47,7 +43,7 @@ export default function ProjectTile({
             height={1024}
             placeholder={`blur`}
             blurDataURL={image}
-            className={`rounded-lg max-h-32 object-cover`}
+            className={`max-h-32 rounded-lg object-cover`}
           />
         )}
       </Link>
@@ -103,12 +99,7 @@ export default function ProjectTile({
           </ul>
         )}
 
-        <LikeButton
-          likes={likes}
-          isSignedIn={isSignedIn}
-          projectId={id}
-          userId={userId}
-        />
+        <LikeButton isSignedIn={isSignedIn} projectId={id} />
       </div>
     </div>
   );

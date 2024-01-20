@@ -2,8 +2,8 @@
 import OpenAI from "openai";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { env } from "@/env";
-import { NextRequest } from "next/server";
-import { ChatCompletionFunctions } from "openai-edge";
+import { type NextRequest } from "next/server";
+import { type ChatCompletionFunctions } from "openai-edge";
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY,

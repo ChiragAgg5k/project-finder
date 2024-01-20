@@ -1,4 +1,8 @@
-import {createTRPCRouter, protectedProcedure, publicProcedure} from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 import { z } from "zod";
 import { comments } from "@/server/db/schema";
 import { v4 } from "uuid";
@@ -34,9 +38,9 @@ export const commentRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       return ctx.db.query.comments.findMany({
         where: eq(comments.projectId, input.projectId),
-          with:{
-            user: true
-          }
+        with: {
+          user: true,
+        },
       });
     }),
 });

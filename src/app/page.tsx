@@ -24,8 +24,8 @@ export default async function Home() {
               <span className={`ml-2 text-accent`}>Passionate Innovators</span>.
             </h1>
             <StaggeredText
-                className={`ml-6 py-6`}
-                fontSize={`1rem`}
+              className={`ml-6 py-6`}
+              fontSize={`1rem`}
               text={
                 "Unlock Your Coding Potential: Explore, Connect, and Contribute with Project Finder – Where Tech Dreams Find Their Code."
               }

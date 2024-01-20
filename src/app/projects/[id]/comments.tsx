@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { api } from "@/trpc/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,14 +18,11 @@ export default function Comments({
     projectId: projectId,
   });
 
-  useEffect(
-    () => {
-      if (addComment.isSuccess) {
-        void comments.refetch();
-      }
-    },
-    [addComment.isSuccess],
-  )
+  useEffect(() => {
+    if (addComment.isSuccess) {
+      void comments.refetch();
+    }
+  }, [addComment.isSuccess]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -54,21 +51,24 @@ export default function Comments({
       </form>
       {comments.data && comments.data.length > 0 ? (
         comments.data.map((comment) => (
-            <div className={`p-4 flex items-center`} key={comment.id}>
-              <Link href={`/users/${comment.user.id}`}>
+          <div className={`flex items-center p-4`} key={comment.id}>
+            <Link href={`/users/${comment.user.id}`}>
               <Image
-                src={comment.user.image ? comment.user.image : "/default-pfp.jpg"}
+                src={
+                  comment.user.image ? comment.user.image : "/default-pfp.jpg"
+                }
                 alt={``}
                 width={50}
                 height={50}
-                className={`rounded-full mr-4`}
-                />
-              </Link>
-              <p>
-                <span className={`font-bold`}>@ {comment.user.name}</span><br />
-                {comment.content}
-              </p>
-            </div>
+                className={`mr-4 rounded-full`}
+              />
+            </Link>
+            <p>
+              <span className={`font-bold`}>@ {comment.user.name}</span>
+              <br />
+              {comment.content}
+            </p>
+          </div>
         ))
       ) : (
         <p

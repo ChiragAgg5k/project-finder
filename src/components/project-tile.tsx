@@ -16,6 +16,7 @@ export default function ProjectTile({
   isGithubProject,
   repoUrl,
   type,
+    score
 }: {
   id: string | undefined;
   title: string;
@@ -29,6 +30,7 @@ export default function ProjectTile({
   repoUrl?: string;
   selectedTags?: string[];
   type?: string | undefined;
+  score: number
 }) {
   return (
     <div
@@ -100,6 +102,12 @@ export default function ProjectTile({
         )}
 
         <LikeButton isSignedIn={isSignedIn} projectId={id} />
+
+        <p
+        className={`absolute bottom-4 left-4 text-sm font-bold text-base-content/50`}
+        >
+          Score: {score}
+        </p>
       </div>
     </div>
   );

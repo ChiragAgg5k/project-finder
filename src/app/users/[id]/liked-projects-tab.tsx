@@ -56,6 +56,7 @@ export default function LikedProjectsTab({
                 searchedQuery={""}
                 searchedTags={[]}
                 isSignedIn={false}
+                score={0}
               />
             ))}
         </div>
@@ -80,6 +81,7 @@ export default function LikedProjectsTab({
                     searchedQuery={""}
                     searchedTags={[]}
                     isSignedIn={false}
+                    score={0}
                   />
                 ),
             )}

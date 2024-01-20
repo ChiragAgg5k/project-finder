@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { api } from "@/trpc/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Chat from "@/components/chatbot";
+import { ScoringAlgorithm } from "@/utils/scoring-algorithm";
 
 const filter = (
   selectedTags: string[],
@@ -32,9 +33,11 @@ const filter = (
 export default function ProjectFilterPage({
   isSignedIn,
   userId,
+  user,
 }: {
   isSignedIn: boolean;
   userId: string;
+  user: any;
 }) {
   const projects = api.project.fetchAll.useQuery();
   const githubTrendingProjects = api.project.fetchGithubTrending.useQuery();
@@ -51,6 +54,9 @@ export default function ProjectFilterPage({
   const [tab, setTab] = useState<"projects" | "github" | "chatbot">("projects");
   const [currentTag, setCurrentTag] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [sort, setSort] = useState<"likes" | "views" | "comments" | "recent">(
+    "recent",
+  );
 
   const githubSearchedProjects = api.project.fetchGithubSearch.useQuery({
     query: search,
@@ -147,6 +153,22 @@ export default function ProjectFilterPage({
               )}
             </ul>
           )}
+          <label className={`label mt-4 text-sm`}>Sort by</label>
+          <select
+            className={`select select-bordered select-sm w-full text-sm`}
+            value={sort}
+            onChange={(e) => {
+              setSort(e.target.value as any);
+            }}
+          >
+            <option disabled={true} value="">
+              Sort by
+            </option>
+            <option value="likes">Most liked</option>
+            <option value="recent">Most recent</option>
+            <option value="comments">Most commented</option>
+            <option value="views">Most viewed</option>
+          </select>
           <button
             className={`btn btn-neutral mt-8 w-full`}
             onClick={() => {
@@ -249,10 +271,12 @@ export default function ProjectFilterPage({
                           searchedTags={selectedTags}
                           isSignedIn={isSignedIn}
                           selectedTags={selectedTags}
+                          score={ScoringAlgorithm(project, user)}
                         />
                       ),
                   )}
-              {githubSearchedProjects.data &&
+              {tab !== "chatbot" &&
+                githubSearchedProjects.data &&
                 githubSearchedProjects.data.map((project, index) => (
                   <ProjectTile
                     id={undefined}
@@ -260,12 +284,14 @@ export default function ProjectFilterPage({
                     key={index}
                     title={project.name}
                     description={project.description ?? ""}
-                    tags={[]}
+                    tags={project.topics ?? []}
                     searchedTags={selectedTags}
                     image={""}
                     isSignedIn={isSignedIn}
                     isGithubProject={true}
                     repoUrl={project.html_url}
+                    // @ts-ignore
+                    score={ScoringAlgorithm(project, user)}
                   />
                 ))}
               {tab === "github" &&
@@ -278,12 +304,14 @@ export default function ProjectFilterPage({
                     key={index}
                     title={project.name}
                     description={project.description ?? ""}
-                    tags={[]}
+                    tags={project.topics ?? []}
                     searchedTags={selectedTags}
                     image={""}
                     isSignedIn={isSignedIn}
                     isGithubProject={true}
                     repoUrl={project.html_url}
+                    // @ts-ignore
+                    score={ScoringAlgorithm(project, user)}
                   />
                 ))}
             </>

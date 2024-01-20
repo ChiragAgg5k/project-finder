@@ -28,4 +28,23 @@ export const userRouter = createTRPCRouter({
       })
       .where(eq(users.id, ctx.session.user.id));
   }),
+
+  updateProfile: protectedProcedure
+    .input(
+      z.object({
+        interests: z.string(),
+        skills: z.string(),
+        rating: z.number(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(users)
+        .set({
+          interests: input.interests,
+          skills: input.skills,
+          rating: input.rating,
+        })
+        .where(eq(users.id, ctx.session.user.id));
+    }),
 });

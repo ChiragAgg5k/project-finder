@@ -13,6 +13,6 @@ export default withUt({
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["sunset"],
+    themes: ["sunset","light"],
   },
 }) satisfies Config;

@@ -1,6 +1,5 @@
 import { api } from "@/trpc/server";
 import Image from "next/image";
-import ProjectTile from "@/components/project-tile";
 import { getServerAuthSession } from "@/server/auth";
 import SignoutButton from "@/components/signout-button";
 import LikedProjectsTab from "@/app/users/[id]/liked-projects-tab";

@@ -1,5 +1,6 @@
 import { getServerAuthSession } from "@/server/auth";
 import Link from "next/link";
+import ThemeSwitcher from "@/components/theme-switcher";
 
 export default async function Navbar() {
   const session = await getServerAuthSession();
@@ -53,6 +54,7 @@ export default async function Navbar() {
                 </Link>
               </li>
             )}
+            <ThemeSwitcher />
           </ul>
         </div>
       </div>

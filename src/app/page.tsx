@@ -19,7 +19,7 @@ export default async function Home() {
           className={`pointer-events-none z-50 flex flex-col items-center justify-center md:flex-row`}
         >
           <div className="flex flex-col items-center justify-center pb-20 pt-16">
-            <h1 className="ml-6 text-5xl font-bold text-white">
+            <h1 className="ml-6 text-5xl font-bold text-base-content">
               Tech Project Discovery for
               <span className={`ml-2 text-accent`}>Passionate Innovators</span>.
             </h1>

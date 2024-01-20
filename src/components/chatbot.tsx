@@ -8,11 +8,11 @@ import Markdown from "react-markdown";
 import { UseTRPCQueryResult } from "@trpc/react-query/shared";
 
 export default function Chat({
-    isSignedIn,
+  isSignedIn,
   userId,
   projects,
 }: {
-    isSignedIn: boolean;
+  isSignedIn: boolean;
   userId: string;
   projects: UseTRPCQueryResult<any, any>;
 }) {
@@ -24,12 +24,14 @@ export default function Chat({
       {
         id: "0",
         role: "assistant",
-        content: isSignedIn ? `How can i assist you in finding the perfect project for you?` : `Please sign in to use the chatbot.`,
+        content: isSignedIn
+          ? `How can i assist you in finding the perfect project for you?`
+          : `Please sign in to use the chatbot.`,
       },
     ],
     body: {
       projects: projects.data ? projects.data : [],
-    }
+    },
   });
 
   return (
@@ -69,7 +71,11 @@ export default function Chat({
                   className={`rounded-full border border-accent  bg-base-100`}
                 />
                 <div className="chat-bubble">
-                  <Markdown className={`leading-6`}>{m.content}</Markdown>
+                  <Markdown className={`leading-6`} components={
+                    {
+                      a: ({node, ...props}) => <a {...props} className={`text-accent underline`}>{props.children}</a>
+                    }
+                  }>{m.content}</Markdown>
                 </div>
               </div>
             )}
@@ -79,7 +85,7 @@ export default function Chat({
 
       <form onSubmit={handleSubmit}>
         <input
-            disabled={!isSignedIn}
+          disabled={!isSignedIn}
           className={`input input-bordered input-md mt-6 w-full`}
           value={input}
           placeholder="Ask your query..."

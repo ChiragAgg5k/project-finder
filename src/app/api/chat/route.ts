@@ -13,7 +13,7 @@ const functions: ChatCompletionFunctions[] = [
   {
     name: "suggest_project",
     description:
-      "Suggest a few of the projects to user and ask them to pick one to further describe.",
+      "Suggest a few of the projects to user and ask them to pick one to further describe. Wrap the suggest projects in links to the project page with the url being /projects/:id",
     parameters: {
       type: "object",
       properties: {

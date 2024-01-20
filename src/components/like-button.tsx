@@ -8,10 +8,12 @@ export default function LikeButton({
   likes,
   isSignedIn,
   projectId,
+  userId,
 }: {
   likes: number;
   isSignedIn: boolean;
   projectId: string | undefined;
+  userId: string;
 }) {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);

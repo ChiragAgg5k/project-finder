@@ -6,6 +6,7 @@ import { FaGithub } from "react-icons/fa";
 
 export default function ProjectTile({
   id,
+  userId,
   title,
   description,
   image,
@@ -19,6 +20,7 @@ export default function ProjectTile({
   type,
 }: {
   id: string | undefined;
+  userId: string;
   title: string;
   description: string;
   image: string;
@@ -101,7 +103,12 @@ export default function ProjectTile({
           </ul>
         )}
 
-        <LikeButton likes={likes} isSignedIn={isSignedIn} projectId={id} />
+        <LikeButton
+          likes={likes}
+          isSignedIn={isSignedIn}
+          projectId={id}
+          userId={userId}
+        />
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { api } from "@/trpc/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Chat from "@/components/chatbot";
 
 const filter = (
   selectedTags: string[],
@@ -31,8 +32,10 @@ const filter = (
 
 export default function ProjectFilterPage({
   isSignedIn,
+  userId,
 }: {
   isSignedIn: boolean;
+  userId: string;
 }) {
   const projects = api.project.fetchAll.useQuery();
   const githubTrendingProjects = api.project.fetchGithubTrending.useQuery();
@@ -45,7 +48,8 @@ export default function ProjectFilterPage({
   const searchType = searchParams.get("type");
 
   const [projectType, setProjectType] = useState<string | undefined>("");
-  const [showGithubProjects, setShowGithubProjects] = useState(false);
+  // const [showGithubProjects, setShowGithubProjects] = useState(false);
+  const [tab, setTab] = useState<"projects" | "github" | "chatbot">("projects");
   const [currentTag, setCurrentTag] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
@@ -93,7 +97,6 @@ export default function ProjectFilterPage({
           <label className={`label text-sm`}>Project Type</label>
           <select
             className={`select select-bordered select-sm mb-4 w-full text-sm`}
-            defaultValue={""}
             value={projectType}
             onChange={(e) => {
               setProjectType(e.target.value);
@@ -159,10 +162,10 @@ export default function ProjectFilterPage({
         </div>
         <hr className={`mb-4 border-base-content/10`} />
 
-        {showGithubProjects ? (
+        {tab === "github" ? (
           <button
             onClick={() => {
-              setShowGithubProjects(false);
+              setTab("projects");
             }}
             className={`btn btn-outline btn-neutral w-full border-base-content/30`}
           >
@@ -171,7 +174,7 @@ export default function ProjectFilterPage({
         ) : (
           <button
             onClick={() => {
-              setShowGithubProjects(true);
+              setTab("github");
             }}
             className={`btn btn-outline btn-neutral w-full border-base-content/30`}
           >
@@ -181,33 +184,60 @@ export default function ProjectFilterPage({
 
         <Link
           href={`/projects/create`}
-          className={`btn btn-outline btn-accent mt-6 w-full`}
+          className={`btn btn-outline btn-neutral mt-2 w-full border-base-content/30`}
         >
           Upload Project
         </Link>
+
+        <p className={`mt-6 text-sm font-semibold text-base-content/70`}>
+          Having issues?
+        </p>
+        {tab === "chatbot" ? (
+          <button
+            onClick={() => {
+              setTab("projects");
+            }}
+            className={`btn btn-accent mt-1 w-full`}
+          >
+            Ask Chatbot
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              setTab("chatbot");
+            }}
+            className={`btn btn-outline btn-accent mt-1 w-full`}
+          >
+            Ask Chatbot
+          </button>
+        )}
       </div>
       <div className={`w-full`}>
-        <div className={`w-full`}>
-          <input
-            className={`input input-bordered mb-8 w-full`}
-            placeholder={`Search Projects`}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <button className={`btn btn-square btn-ghost absolute right-8`}>
-            <CiSearch className={`text-xl`} />
-          </button>
-        </div>
+        {tab !== "chatbot" && (
+          <div className={`w-full`}>
+            <input
+              className={`input input-bordered mb-8 w-full`}
+              placeholder={`Search Projects...`}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <button className={`btn btn-square btn-ghost absolute right-8`}>
+              <CiSearch className={`text-xl`} />
+            </button>
+          </div>
+        )}
         <div
           className={`grid grid-cols-1 gap-8 md:grid-cols-2  lg:grid-cols-3`}
         >
           {projects.data === undefined ? (
-            <p className={`col-span-3 mt-36 text-center text-base-content/70`}>
+            <p
+              className={`col-span-3 mt-36 text-center text-sm text-base-content/70`}
+            >
               Loading...
             </p>
           ) : (
             <>
-              {!showGithubProjects &&
+              {tab === "projects" &&
                 projects.data
                   ?.filter((project) =>
                     filter(selectedTags, search, project, projectType),
@@ -217,6 +247,7 @@ export default function ProjectFilterPage({
                       project && (
                         <ProjectTile
                           id={project.id}
+                          userId={userId}
                           searchedQuery={search}
                           key={index}
                           type={project.type ?? undefined}
@@ -235,6 +266,7 @@ export default function ProjectFilterPage({
                 githubSearchedProjects.data.map((project, index) => (
                   <ProjectTile
                     id={undefined}
+                    userId={userId}
                     searchedQuery={search}
                     key={index}
                     title={project.name}
@@ -248,12 +280,13 @@ export default function ProjectFilterPage({
                     repoUrl={project.html_url}
                   />
                 ))}
-              {showGithubProjects &&
+              {tab === "github" &&
                 !search &&
                 githubTrendingProjects.data &&
                 githubTrendingProjects.data.map((project, index) => (
                   <ProjectTile
                     id={undefined}
+                    userId={userId}
                     searchedQuery={search}
                     key={index}
                     title={project.name}
@@ -270,6 +303,9 @@ export default function ProjectFilterPage({
             </>
           )}
         </div>
+
+        {tab === "chatbot" && <Chat userId={userId} />}
+
         {projects.data &&
         projects.data.filter((project) => filter(selectedTags, search, project))
           .length === 0 &&

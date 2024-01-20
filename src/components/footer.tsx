@@ -15,17 +15,17 @@ export default function Footer() {
       <nav>
         <header className="footer-title">Social</header>
         <div className="grid grid-flow-col gap-4">
-          <Link href={`https://github.com/ChiragAgg5k`}>
+          <Link href={`https://github.com/ChiragAgg5k`} target={"_blank"} rel={"noopener noreferrer"}>
             <FaGithub
               className={`text-3xl transition-all ease-in-out hover:text-base-content`}
             />
           </Link>
-          <Link href={`https://www.linkedin.com/in/chiragagg5k/`}>
+          <Link href={`https://www.linkedin.com/in/chiragagg5k/`} target={"_blank"} rel={"noopener noreferrer"}>
             <FaLinkedin
               className={`text-3xl transition-all ease-in-out hover:text-base-content`}
             />
           </Link>
-          <Link href={`https://twitter.com/ChiragAgg5k`}>
+          <Link href={`https://twitter.com/ChiragAgg5k`} target={"_blank"} rel={"noopener noreferrer"}>
             <FaXTwitter
               className={`text-3xl transition-all ease-in-out hover:text-base-content`}
             />

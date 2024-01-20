@@ -3,6 +3,7 @@ import Image from "next/image";
 import ProjectTile from "@/components/project-tile";
 import { getServerAuthSession } from "@/server/auth";
 import SignoutButton from "@/components/signout-button";
+import LikedProjectsTab from "@/app/users/[id]/liked-projects-tab";
 
 export default async function UsersPage({
   params,
@@ -53,41 +54,14 @@ export default async function UsersPage({
               <p className={`mb-4 text-base-content/70`}>{user.email}</p>
             </div>
             {session && session.user.id === user.id && (
-                <>
-              <SignoutButton className={`btn btn-neutral btn-wide`} />
-                <button className={`btn btn-neutral btn-outline border-base-content/25 btn-wide mt-4`}>
-                  Liked Projects
-                </button>
+              <>
+                <SignoutButton className={`btn btn-neutral btn-wide`} />
               </>
             )}
           </div>
         </div>
-        <div
-          className={`w-full border-t border-base-content/25 p-8 md:border-l md:border-t-0`}
-        >
-          <h2 className={`mb-4 text-2xl font-bold`}>Projects Posted: </h2>
-          {projects.length === 0 ? (
-            <p className={`text-base-content/70`}>No projects posted yet.</p>
-          ) : (
-            <div
-              className={`grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3`}
-            >
-              {projects.map((project) => (
-                <ProjectTile
-                  key={project.id}
-                  id={project.id}
-                  title={project.name}
-                  description={project.description ?? ""}
-                  image={project.image ?? ""}
-                  tags={project.tags?.split(",") ?? []}
-                  searchedQuery={""}
-                  searchedTags={[]}
-                  isSignedIn={false}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+
+        <LikedProjectsTab projects={projects} />
       </div>
     </div>
   );

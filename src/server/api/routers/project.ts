@@ -1,6 +1,10 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 import { z } from "zod";
-import { projects } from "@/server/db/schema";
+import { likes, projects } from "@/server/db/schema";
 import { v4 } from "uuid";
 import { eq } from "drizzle-orm";
 import { Octokit } from "octokit";
@@ -70,6 +74,20 @@ export const projectRouter = createTRPCRouter({
         where: eq(projects.ownerId, input.userId),
       });
     }),
+
+  fetchUserLikedProjects: protectedProcedure.query(async ({ ctx }) => {
+    const likedProjects = await ctx.db.query.likes.findMany({
+      where: eq(likes.userId, ctx.session.user.id),
+    });
+
+    return Promise.all(
+      likedProjects.map(async (likedProject) => {
+        return ctx.db.query.projects.findFirst({
+          where: eq(projects.id, likedProject.projectId),
+        });
+      }),
+    );
+  }),
 
   fetchGithubTrending: publicProcedure.query(async () => {
     const date = new Date();

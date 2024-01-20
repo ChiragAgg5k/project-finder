@@ -124,7 +124,7 @@ export default async function ProjectPage({
             alt={`project image`}
             width={400}
             height={400}
-            className={`mb-16 h-[40dvh] max-w-[40dvw] w-auto rounded-xl object-cover`}
+            className={`mb-16 h-[40dvh] md:max-w-[40dvw] w-auto rounded-xl object-cover`}
           />
         )}
       </div>

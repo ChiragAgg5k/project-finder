@@ -13,7 +13,7 @@ export default async function Navbar() {
           </Link>
         </div>
         <div className="flex-none">
-          <ul className="menu menu-horizontal space-x-2 px-1">
+          <ul className="menu flex items-center justify-center menu-horizontal space-x-2 px-1">
             <li>
               <Link
                 href={`/projects`}
@@ -33,7 +33,7 @@ export default async function Navbar() {
               </li>
             ) : (
               <li>
-                <Link href={`/auth/signin`} className={`text-nowrap`}>
+                <Link href={`/auth/signin`} className={`btn btn-ghost btn-sm font-normal text-nowrap`}>
                   Sign In
                 </Link>
               </li>

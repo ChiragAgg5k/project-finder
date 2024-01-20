@@ -56,7 +56,9 @@ export default function Chat({ userId }: { userId: string }) {
                   height={40}
                   className={`rounded-full border border-accent  bg-base-100`}
                 />
-                <div className="chat-bubble"><Markdown>{m.content}</Markdown></div>
+                <div className="chat-bubble">
+                  <Markdown>{m.content}</Markdown>
+                </div>
               </div>
             )}
           </div>

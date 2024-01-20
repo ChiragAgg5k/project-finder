@@ -5,9 +5,7 @@ import { env } from "@/env";
 import { NextRequest } from "next/server";
 import { ChatCompletionFunctions } from "openai-edge";
 
-
-const functions: ChatCompletionFunctions[] = [
-]
+const functions: ChatCompletionFunctions[] = [];
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY,

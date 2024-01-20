@@ -67,6 +67,7 @@ export default async function UsersPage({
                 <ProjectTile
                   key={project.id}
                   id={project.id}
+                  userId={user.id}
                   title={project.name}
                   description={project.description ?? ""}
                   image={project.image ?? ""}

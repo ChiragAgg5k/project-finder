@@ -81,7 +81,7 @@ export default function ProjectFilterPage({
 
   return (
     <div
-      className={`relative mt-20 flex min-h-[91dvh] flex-col bg-base-200 p-8 pb-32 sm:flex-row`}
+      className={`relative mt-20 flex min-h-[91dvh] flex-col bg-base-200 p-8 sm:flex-row`}
     >
       <div className={`top-8 mb-8 mr-8 h-fit w-full sm:sticky sm:w-fit`}>
         <div className={`rounded-xl border border-base-content/10 px-4 py-8`}>
@@ -304,7 +304,7 @@ export default function ProjectFilterPage({
           )}
         </div>
 
-        {tab === "chatbot" && <Chat userId={userId} />}
+        {tab === "chatbot" && <Chat userId={userId} projects={projects} isSignedIn={isSignedIn} />}
 
         {projects.data &&
         projects.data.filter((project) => filter(selectedTags, search, project))

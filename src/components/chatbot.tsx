@@ -5,8 +5,17 @@ import { useChat } from "ai/react";
 import Image from "next/image";
 import { api } from "@/trpc/react";
 import Markdown from "react-markdown";
+import { UseTRPCQueryResult } from "@trpc/react-query/shared";
 
-export default function Chat({ userId }: { userId: string }) {
+export default function Chat({
+    isSignedIn,
+  userId,
+  projects,
+}: {
+    isSignedIn: boolean;
+  userId: string;
+  projects: UseTRPCQueryResult<any, any>;
+}) {
   const user = api.user.fetch.useQuery({
     userId: userId,
   });
@@ -15,9 +24,12 @@ export default function Chat({ userId }: { userId: string }) {
       {
         id: "0",
         role: "assistant",
-        content: `How can i assist you in finding the perfect project for you?`,
+        content: isSignedIn ? `How can i assist you in finding the perfect project for you?` : `Please sign in to use the chatbot.`,
       },
     ],
+    body: {
+      projects: projects.data ? projects.data : [],
+    }
   });
 
   return (
@@ -57,7 +69,7 @@ export default function Chat({ userId }: { userId: string }) {
                   className={`rounded-full border border-accent  bg-base-100`}
                 />
                 <div className="chat-bubble">
-                  <Markdown>{m.content}</Markdown>
+                  <Markdown className={`leading-6`}>{m.content}</Markdown>
                 </div>
               </div>
             )}
@@ -67,6 +79,7 @@ export default function Chat({ userId }: { userId: string }) {
 
       <form onSubmit={handleSubmit}>
         <input
+            disabled={!isSignedIn}
           className={`input input-bordered input-md mt-6 w-full`}
           value={input}
           placeholder="Ask your query..."

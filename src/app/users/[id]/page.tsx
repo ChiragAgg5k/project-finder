@@ -53,7 +53,12 @@ export default async function UsersPage({
               <p className={`mb-4 text-base-content/70`}>{user.email}</p>
             </div>
             {session && session.user.id === user.id && (
+                <>
               <SignoutButton className={`btn btn-neutral btn-wide`} />
+                <button className={`btn btn-neutral btn-outline border-base-content/25 btn-wide mt-4`}>
+                  Liked Projects
+                </button>
+              </>
             )}
           </div>
         </div>

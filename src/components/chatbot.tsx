@@ -19,6 +19,7 @@ export default function Chat({
   const user = api.user.fetch.useQuery({
     userId: userId,
   });
+
   const { messages, input, handleInputChange, handleSubmit } = useChat({
     initialMessages: [
       {
@@ -36,8 +37,17 @@ export default function Chat({
 
   return (
     <div
-      className={`flex min-h-[85dvh] flex-col rounded-xl border border-base-content/25 p-8`}
+      className={`relative flex min-h-[85dvh] flex-col rounded-xl border border-base-content/25 p-8`}
     >
+      <div className={`btn btn-neutral btn-sm absolute right-4 top-4`}>
+        <p className={`text-sm`}>
+          {user.data ? (
+            user.data.trialUsed + "/" + 5 + " chats used"
+          ) : (
+            <span className={`animate-pulse`}>Loading...</span>
+          )}
+        </p>
+      </div>
       <div
         className={`h-[70dvh] flex-grow space-y-4 overflow-y-scroll text-sm`}
       >
@@ -74,7 +84,7 @@ export default function Chat({
                   <Markdown
                     className={`leading-6`}
                     components={{
-                      a: ({ node, ...props }) => (
+                      a: ({ ...props }) => (
                         <a {...props} className={`text-accent underline`}>
                           {props.children}
                         </a>

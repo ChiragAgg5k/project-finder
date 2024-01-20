@@ -7,7 +7,6 @@ import ProjectTile from "@/components/project-tile";
 import React, { useEffect, useState } from "react";
 import { api } from "@/trpc/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import Chat from "@/components/chatbot";
 
 const filter = (
@@ -181,13 +180,6 @@ export default function ProjectFilterPage({
             Trending Github Projects
           </button>
         )}
-
-        <Link
-          href={`/projects/create`}
-          className={`btn btn-outline btn-neutral mt-2 w-full border-base-content/30`}
-        >
-          Upload Project
-        </Link>
 
         <p className={`mt-6 text-sm font-semibold text-base-content/70`}>
           Having issues?

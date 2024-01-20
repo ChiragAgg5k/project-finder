@@ -14,6 +14,18 @@ export default async function Navbar() {
         </div>
         <div className="flex-none">
           <ul className="menu menu-horizontal flex items-center justify-center space-x-2 px-1">
+            {
+                session && (
+                    <li>
+                      <Link
+                          href={`/projects/create`}
+                          className={`btn btn-ghost btn-sm font-normal`}
+                      >
+                        Upload Project
+                      </Link>
+                    </li>
+                )
+            }
             <li>
               <Link
                 href={`/projects`}

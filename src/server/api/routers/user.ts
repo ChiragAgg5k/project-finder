@@ -1,7 +1,11 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 import { z } from "zod";
 import { users } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 export const userRouter = createTRPCRouter({
   fetch: publicProcedure
@@ -16,23 +20,12 @@ export const userRouter = createTRPCRouter({
       });
     }),
 
-  fetchLikedProjects: publicProcedure
-    .input(
-      z.object({
-        userId: z.string().uuid(),
-      }),
-    )
-    .query(async ({ ctx, input }) => {
-      const user = await ctx.db
-        .select()
-        .from(users)
-        .where(eq(users.id, input.userId))
-        .limit(1);
-
-      if (!user[0]) {
-        return [];
-      }
-
-      return user[0].likedProjects;
-    }),
+  incrementTrialUsed: protectedProcedure.query(async ({ ctx }) => {
+    await ctx.db
+      .update(users)
+      .set({
+        trialUsed: sql<string>`${users.trialUsed} + 1`,
+      })
+      .where(eq(users.id, ctx.session.user.id));
+  }),
 });

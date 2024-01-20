@@ -34,7 +34,7 @@ export default async function UsersPage({
     <div
       className={`mt-20 flex min-h-[91dvh] flex-col items-center justify-center bg-base-200 p-8`}
     >
-      <div className={`flex min-h-[60dvh] w-full`}>
+      <div className={`flex flex-col md:flex-row min-h-[60dvh] w-full`}>
         <div
           className={`flex h-full min-h-[60dvh] flex-col items-center justify-center`}
         >
@@ -57,12 +57,12 @@ export default async function UsersPage({
             )}
           </div>
         </div>
-        <div className={`w-full border-l border-base-content/25 p-8`}>
+        <div className={`w-full md:border-l border-t md:border-t-0 border-base-content/25 p-8`}>
           <h2 className={`mb-4 text-2xl font-bold`}>Projects Posted: </h2>
           {projects.length === 0 ? (
             <p className={`text-base-content/70`}>No projects posted yet.</p>
           ) : (
-            <div className={`grid grid-cols-3 gap-8`}>
+            <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8`}>
               {projects.map((project) => (
                 <ProjectTile
                   key={project.id}

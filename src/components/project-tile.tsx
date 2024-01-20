@@ -47,7 +47,7 @@ export default function ProjectTile({
             height={1024}
             placeholder={`blur`}
             blurDataURL={image}
-            className={`rounded-lg object-cover`}
+            className={`rounded-lg max-h-32 object-cover`}
           />
         )}
       </Link>

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { api } from "@/trpc/react";
 import Markdown from "react-markdown";
 import { UseTRPCQueryResult } from "@trpc/react-query/shared";
+import { useEffect } from "react";
 
 export default function Chat({
   isSignedIn,
@@ -19,6 +20,13 @@ export default function Chat({
   const user = api.user.fetch.useQuery({
     userId: userId,
   });
+  const incrementTrialUsed = api.user.incrementTrialUsed.useMutation();
+
+  useEffect(() => {
+    if (incrementTrialUsed.isSuccess) {
+      void user.refetch();
+    }
+  }, [incrementTrialUsed.isSuccess]);
 
   const { messages, input, handleInputChange, handleSubmit } = useChat({
     initialMessages: [
@@ -32,6 +40,9 @@ export default function Chat({
     ],
     body: {
       projects: projects.data ? projects.data : [],
+    },
+    onFinish: () => {
+      incrementTrialUsed.mutate();
     },
   });
 
@@ -102,7 +113,14 @@ export default function Chat({
 
       <form onSubmit={handleSubmit}>
         <input
-          disabled={!isSignedIn}
+          disabled={
+            !isSignedIn ||
+            (user.data
+              ? user.data.trialUsed
+                ? user.data.trialUsed >= 5
+                : false
+              : false)
+          }
           className={`input input-bordered input-md mt-6 w-full`}
           value={input}
           placeholder="Ask your query..."

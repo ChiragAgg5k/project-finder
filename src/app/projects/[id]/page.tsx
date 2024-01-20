@@ -42,7 +42,9 @@ export default async function ProjectPage({
     <div
       className={`relative mt-20 flex min-h-[90dvh] flex-col justify-center bg-base-200 p-8`}
     >
-      <div className={`mt-12 flex items-center w-full flex-col-reverse md:flex-row`}>
+      <div
+        className={`mt-12 flex w-full flex-col-reverse items-center md:flex-row`}
+      >
         <Link
           href={`/projects`}
           className={`btn btn-neutral absolute left-4 top-4`}

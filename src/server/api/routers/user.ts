@@ -20,7 +20,7 @@ export const userRouter = createTRPCRouter({
       });
     }),
 
-  incrementTrialUsed: protectedProcedure.query(async ({ ctx }) => {
+  incrementTrialUsed: protectedProcedure.mutation(async ({ ctx }) => {
     await ctx.db
       .update(users)
       .set({

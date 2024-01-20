@@ -66,9 +66,9 @@ export default function Comments({
             <p>
               <span className={`font-bold`}>@ {comment.user.name}</span>
               <br />
-              <span className={`text-base-content/70 text-[0.9rem]`}>
-              {comment.content}
-                </span>
+              <span className={`text-[0.9rem] text-base-content/70`}>
+                {comment.content}
+              </span>
             </p>
           </div>
         ))

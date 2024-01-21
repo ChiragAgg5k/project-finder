@@ -241,8 +241,6 @@ function calculateProjectScore(project: any, user : any) {
   // Type score is binary (either 0 or typeWeight)
   const typeScore = projectType ? typeWeight : 0;
 
-  console.log(likesScore, interestsScore, skillsScore, ratingScore, createdAtScore, typeScore);
-
   // Calculate total score out of 100
   return (
     (likesScore +

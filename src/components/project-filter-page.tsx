@@ -53,6 +53,18 @@ const sortingAlgo = (
     }
   }
 
+  if(sort === "recent") {
+    const dateA = new Date(projectA.createdAt).getTime();
+    const dateB = new Date(projectB.createdAt).getTime();
+    console.log(dateA, dateB);
+    if (dateA < dateB) {
+      return 1;
+    }
+    if (dateA > dateB) {
+      return -1;
+    }
+  }
+
   return 0;
 };
 
@@ -193,8 +205,6 @@ export default function ProjectFilterPage({
             <option value="score">Recommended</option>
             <option value="likes">Most liked</option>
             <option value="recent">Most recent</option>
-            <option value="comments">Most commented</option>
-            <option value="views">Most viewed</option>
           </select>
           <button
             className={`btn btn-neutral mt-8 w-full`}

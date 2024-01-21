@@ -173,7 +173,7 @@ function calculateGitHubProjectScore(
     userInterests.includes(interest),
   );
   const interestsScore =
-    (interestsIntersection.length / projectInterests.length) * interestsWeight;
+    (interestsIntersection.length ?? 0 / projectInterests.length) * interestsWeight;
 
   // Skills score based on the intersection of project language and user skills
   const projectLanguage = language;
@@ -241,10 +241,18 @@ function calculateProjectScore(project: any, user : any) {
   // Type score is binary (either 0 or typeWeight)
   const typeScore = projectType ? typeWeight : 0;
 
-  // Calculate total score out of 100
-  const totalScore = (likesScore + interestsScore + skillsScore + ratingScore + createdAtScore + typeScore) * 100;
+  console.log(likesScore, interestsScore, skillsScore, ratingScore, createdAtScore, typeScore);
 
-  return totalScore;
+  // Calculate total score out of 100
+  return (
+    (likesScore +
+      interestsScore +
+      skillsScore +
+      ratingScore +
+      createdAtScore +
+      typeScore) *
+    100
+  );
 }
 
 export const ScoringAlgorithm = (

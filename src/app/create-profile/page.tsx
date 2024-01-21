@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import {api} from "@/trpc/react";
+import {useRouter} from "next/navigation";
 
 const interests = [
   "Web Development",
@@ -85,6 +86,13 @@ export default function CreateProfile() {
   const [selectedSkillLevel, setSkillLevel] = useState<string>("");
 
   const updateProfile = api.user.updateProfile.useMutation();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (updateProfile.isSuccess) {
+      router.push(`/projects`);
+    }
+  }, [updateProfile.isSuccess]);
 
   const handleSubmit = () => {
     console.log(selectedInterests, selectedSkills);

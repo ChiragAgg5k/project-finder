@@ -30,6 +30,32 @@ const filter = (
   );
 };
 
+const sortingAlgo = (
+  projectA: any,
+  projectB: any,
+  user: any,
+  sort: "likes" | "views" | "comments" | "recent" | "score",
+) => {
+  if (ScoringAlgorithm(projectA, user) > ScoringAlgorithm(projectB, user)) {
+    return -1;
+  } else if (
+    ScoringAlgorithm(projectA, user) < ScoringAlgorithm(projectB, user)
+  ) {
+    return 1;
+  }
+
+  if (sort === "likes") {
+    if (projectA.likes.length > projectB.likes.length) {
+      return -1;
+    }
+    if (projectA.likes.length < projectB.likes.length) {
+      return 1;
+    }
+  }
+
+  return 0;
+};
+
 export default function ProjectFilterPage({
   isSignedIn,
   userId,
@@ -54,9 +80,9 @@ export default function ProjectFilterPage({
   const [tab, setTab] = useState<"projects" | "github" | "chatbot">("projects");
   const [currentTag, setCurrentTag] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [sort, setSort] = useState<"likes" | "views" | "comments" | "recent">(
-    "recent",
-  );
+  const [sort, setSort] = useState<
+    "likes" | "views" | "comments" | "recent" | "score"
+  >("score");
 
   const githubSearchedProjects = api.project.fetchGithubSearch.useQuery({
     query: search,
@@ -164,6 +190,7 @@ export default function ProjectFilterPage({
             <option disabled={true} value="">
               Sort by
             </option>
+            <option value="score">Recommended</option>
             <option value="likes">Most liked</option>
             <option value="recent">Most recent</option>
             <option value="comments">Most commented</option>
@@ -256,6 +283,7 @@ export default function ProjectFilterPage({
                   ?.filter((project) =>
                     filter(selectedTags, search, project, projectType),
                   )
+                  .sort((a, b) => sortingAlgo(a, b, user, sort))
                   .map(
                     (project, index) =>
                       project && (

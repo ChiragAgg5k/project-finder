@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getServerAuthSession } from "@/server/auth";
 import SignoutButton from "@/components/signout-button";
 import LikedProjectsTab from "@/app/users/[id]/liked-projects-tab";
+import Link from "next/link";
 
 export default async function UsersPage({
   params,
@@ -55,6 +56,9 @@ export default async function UsersPage({
             {session && session.user.id === user.id && (
               <>
                 <SignoutButton className={`btn btn-neutral btn-wide`} />
+                <Link href={`/create-profile`} className={`btn btn-outline btn-wide btn-neutral border-base-content/25 mt-4`}>
+                  Update Preferences
+                </Link>
               </>
             )}
           </div>

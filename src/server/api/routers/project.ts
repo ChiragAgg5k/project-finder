@@ -66,7 +66,7 @@ export const projectRouter = createTRPCRouter({
   fetchUserProjects: publicProcedure
     .input(
       z.object({
-        userId: z.string().uuid(),
+        userId: z.string(),
       }),
     )
     .query(async ({ ctx, input }) => {

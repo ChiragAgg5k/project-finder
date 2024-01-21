@@ -265,7 +265,7 @@ export const ScoringAlgorithm = (
     rating: number;
   },
 ) => {
-  if (!user.id) {
+  if (!user || !user.id) {
     return 0;
   }
 

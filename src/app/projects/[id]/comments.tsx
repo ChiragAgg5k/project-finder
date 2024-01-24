@@ -51,6 +51,7 @@ export default function Comments({
       </form>
       {comments.data && comments.data.length > 0 ? (
         comments.data.map((comment) => (
+            comment.user &&
           <div className={`flex items-center p-4`} key={comment.id}>
             <Link href={`/users/${comment.user.id}`}>
               <Image

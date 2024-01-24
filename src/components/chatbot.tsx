@@ -60,7 +60,7 @@ export default function Chat({
         </p>
       </div>
       <div
-        className={`h-[70dvh] flex-grow space-y-4 overflow-y-scroll text-sm`}
+        className={`h-[70dvh] flex-grow space-y-4 pt-8 overflow-y-scroll text-sm`}
       >
         {messages.map((m) => (
           <div key={m.id}>

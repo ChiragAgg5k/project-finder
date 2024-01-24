@@ -1,6 +1,7 @@
 import { getServerAuthSession } from "@/server/auth";
 import Link from "next/link";
 import ThemeSwitcher from "@/components/theme-switcher";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 export default async function Navbar() {
   const session = await getServerAuthSession();
@@ -14,7 +15,52 @@ export default async function Navbar() {
           </Link>
         </div>
         <div className="flex-none">
-          <ul className="menu menu-horizontal flex items-center justify-center space-x-2 px-1">
+          <details className="dropdown dropdown-end sm:hidden">
+            <summary className="btn btn-sm m-1">
+              <GiHamburgerMenu />
+            </summary>
+            <ul className="menu dropdown-content z-[1] w-fit rounded-box bg-base-100 p-2 shadow">
+              {session && (
+                <li>
+                  <Link
+                    href={`/projects/create`}
+                    className={`btn btn-ghost btn-sm text-nowrap font-normal`}
+                  >
+                    Upload Project
+                  </Link>
+                </li>
+              )}
+              <li>
+                <Link
+                  href={`/projects`}
+                  className={`btn btn-ghost btn-sm font-normal`}
+                >
+                  Find Projects
+                </Link>
+              </li>
+              {session ? (
+                <li>
+                  <Link
+                    href={`/users/${session.user.id}`}
+                    className={`btn btn-ghost btn-sm font-normal`}
+                  >
+                    Profile
+                  </Link>
+                </li>
+              ) : (
+                <li>
+                  <Link
+                    href={`/auth/signin`}
+                    className={`btn btn-ghost btn-sm text-nowrap font-normal`}
+                  >
+                    Sign In
+                  </Link>
+                </li>
+              )}
+              <ThemeSwitcher />
+            </ul>
+          </details>
+          <ul className="menu-horizontal hidden items-center justify-center space-x-2 px-1 sm:flex">
             {session && (
               <li>
                 <Link

@@ -51,7 +51,7 @@ export default async function ProjectPage({
         >
           <IoMdArrowRoundBack className={`text-xl`} />
         </Link>
-        <div className={`w-full pr-8`}>
+        <div className={`w-full md:pr-8`}>
           <div className={`mb-8 flex w-full items-center justify-center`}>
             <div>
               <Link

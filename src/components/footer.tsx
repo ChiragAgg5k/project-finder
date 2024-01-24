@@ -9,7 +9,7 @@ export default function Footer() {
         <h4 className={`text-xl font-bold`}>Team Obsidian</h4>
         <p>
           Bennett University{" "}
-          <span className={`text-accent`}>Industry Project</span> Hackathon
+          <span className={`text-accent`}>Industry Hackathon</span> project.
         </p>
       </aside>
       <nav>
